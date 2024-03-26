@@ -1,18 +1,21 @@
 package card.domain;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Transient;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-@Document
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 public class yugiohCard {
     
     @Id
-    private String id;//主键
+    private Long id;//主键
 
     private String name;//名字
 
@@ -22,10 +25,20 @@ public class yugiohCard {
 
     private ElementType elementType;//元素类型
     
-    private String header;//描述，用于效果栏上方，例：[龙族/通常]
-    private String description;//效果描述
+    @Transient
+    private skill skill;//技能
 
+    private Long skillId;//技能Id
+
+    @Transient
     private innerPrint print;//图片
+
+    private Long printId;//图片Id
+
+    //可选项
+    private String designer;//设计师
+    private String copyright;//版权
+    private String number;//编号
 
     @Max(value = 13, message = "星级最高为13")
     private int stars;//星级
@@ -48,4 +61,14 @@ public class yugiohCard {
     public enum CardType {
         ORIGIN, EFECT, RITE, FUSION, HOMOLOGY, EXCESS, CONNECT, RAMIFICATION
     }//通常、效果、仪式、融合、同调、超量、连接、衍生物
+
+    public void setSkill(skill s) {
+        this.skill = s;
+        if(s.getId() != null) this.setSkillId(s.getId());
+    }
+
+    public void setPrint(innerPrint p) {
+        this.print = p;
+        if(p.getId() != null) this.setPrintId(p.getId());
+    }
 }
