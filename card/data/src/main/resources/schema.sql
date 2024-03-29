@@ -13,19 +13,19 @@ create table InnerPrint (
 
 create table SanGuoShaCard (
     id identity,
-    frameH double not null,
-    frameW double not null,
+    frame_H double not null,
+    frame_W double not null,
     country varchar(5) not null,
     blood int not null,
-    maxBlood int not null,
-    unEqualBlood boolean not null,
+    max_Blood int not null,
+    un_Equal_Blood boolean not null,
     title varchar(50),
     name varchar(50),
-    printId bigint,
+    print_Id bigint,
     printer varchar(50),
     copyright varchar(50),
     number varchar(50),
-    skillIds int array
+    skill_Ids int array
 );
 
 create table Skill (
@@ -37,12 +37,12 @@ create table Skill (
 create table YuGiOhCard (
     id identity,
     name varchar(50),
-    gradientColor boolean,
-    cardCatalog varchar(20),
-    elementType varchar(20),
+    gradient_Color boolean,
+    card_Catalog varchar(20),
+    element_Type varchar(20),
     cardtype varchar(20),
-    skillId bigint,
-    printId bigint,
+    skill_Id bigint,
+    print_Id bigint,
     designer varchar(50),
     copyright varchar(50),
     number varchar(50),

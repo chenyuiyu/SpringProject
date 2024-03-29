@@ -32,9 +32,9 @@ public class sanguoshaCard {
 
     private @NonNull countryType country;//国家
 
-    private int blood = 4;//血量
-    private int maxBlood = 4;//血量上限
-    private boolean unEqualBlood = false;//血量与上限不等
+    private Integer blood = 4;//血量
+    private Integer maxBlood = 4;//血量上限
+    private Boolean unEqualBlood = false;//血量与上限不等
     
     private String title;//武将称号
 
@@ -59,19 +59,19 @@ public class sanguoshaCard {
         WEI, SHU, WU, QUN, SHEN
     }//魏蜀吴群神晋
 
-    public void setPicture(innerPrint p) {
+    public void setPrint(innerPrint p) {
         this.print = p;
         if(p.getId() != null) this.setPrintId(p.getId());
     }
 
     public void setMaxBlood(int maxBlood) {
         this.maxBlood = maxBlood;
-        if(this.blood > maxBlood || !this.isUnEqualBlood()) this.blood = maxBlood;
+        if(this.blood > maxBlood || !this.getUnEqualBlood()) this.blood = maxBlood;
     }
 
     public void setBlood(int blood) {
         this.blood = blood;
-        if(this.maxBlood < blood || !this.isUnEqualBlood()) this.maxBlood = blood;
+        if(this.maxBlood < blood || !this.getUnEqualBlood()) this.maxBlood = blood;
     }
 
     public void addSkill(skill s) {

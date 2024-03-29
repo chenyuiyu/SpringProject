@@ -91,7 +91,7 @@ public class dataLoaderTests {
         //鲍三娘
         sanguoshaCard shuWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("SHU"));
 
-        Mono<innerPrint> p3 = innerPrintRepo.save(shu).doOnNext(res -> shuWuJiang.setPicture(res));
+        Mono<innerPrint> p3 = innerPrintRepo.save(shu).doOnNext(res -> shuWuJiang.setPrint(res));
         StepVerifier.create(p3).expectNext(shu).verifyComplete();
 
         shuWuJiang.setName("鲍三娘");
@@ -218,16 +218,33 @@ public class dataLoaderTests {
 
     @Test
     public void testSanGuoShaRepository() {
-        StepVerifier.create(sanguoshaCardRepo.findAll())
-        .recordWith(ArrayList::new)
-        .thenConsumeWhile(x -> true)
-        .consumeRecordedWith(
-            arr -> {
-                assertThat(arr).hasSize(6);
-                for(sanguoshaCard c : arr) {
-                    assertThat(sanguoshacardSet).contains(c);
-                }
+        
+        Flux<sanguoshaCard> f = sanguoshaCardRepo.findAll()
+        .flatMap(
+            card -> {
+                return innerPrintRepo.findById(card.getPrintId())
+                    .doOnNext(p -> {card.setPrint(p);})
+                    .thenReturn(card);
             }
-        ).verifyComplete();
+        ).flatMap(
+            card -> {
+                card.setSkills(new ArrayList<>());
+                return skillRepo.findAllById(card.getSkillIds())
+                    .doOnNext(s -> {card.addSkill(s);})
+                    .then(Mono.just(card));
+            }
+        );
+
+        StepVerifier.create(f)
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(x -> true)
+            .consumeRecordedWith(
+                arr -> {
+                    assertThat(arr).hasSize(6);
+                    for(sanguoshaCard c : arr) {
+                        assertThat(sanguoshacardSet).contains(c);
+                    }
+                } 
+            ).verifyComplete();
     }
 }
