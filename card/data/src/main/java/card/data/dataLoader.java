@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import card.data.config.dataConfig;
 import card.domain.innerPrint;
 import card.domain.sanguoshaCard;
+import card.domain.yugiohCard;
 import card.domain.skill;
 
 @Component
@@ -125,7 +126,7 @@ public class dataLoader {
         yugiohCard blueeyewhitedragon = new yugiohCard();
         blueeyewhitedragon.setCardCatalog(yugiohCard.CardCatalog.valueOf("MONSTER"));
         blueeyewhitedragon.setElementType(yugiohCard.ElementType.valueOf("LIGHT"));
-        blueeyewhitedragon.setCardType(yugiohCard.CardType.valueOf("ORIGIN"));
+        blueeyewhitedragon.setCardtype(yugiohCard.CardType.valueOf("ORIGIN"));
         blueeyewhitedragon.setPrint(monster);
         blueeyewhitedragon.setName("青眼白龙");
         blueeyewhitedragon.setGradientColor(true);
