@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @EqualsAndHashCode(exclude = "id")
+@Table("SanGuoShaCard")
 public class sanguoshaCard {
 
     @Id
@@ -39,9 +41,9 @@ public class sanguoshaCard {
     private String name;//武将名
 
     @Transient
-    private innerPrint picture;//武将原画
+    private innerPrint print;//武将原画
 
-    private Long pictureId;//原画Id
+    private Long printId;//原画Id
     
     //可选项
     private String printer;//画师
@@ -57,14 +59,19 @@ public class sanguoshaCard {
         WEI, SHU, WU, QUN, SHEN
     }//魏蜀吴群神晋
 
+    public void setPicture(innerPrint p) {
+        this.print = p;
+        if(p.getId() != null) this.setPrintId(p.getId());
+    }
+
     public void setMaxBlood(int maxBlood) {
         this.maxBlood = maxBlood;
-        if(this.blood > maxBlood || !this.isUnEqualBlood()) this.setBlood(maxBlood);
+        if(this.blood > maxBlood || !this.isUnEqualBlood()) this.blood = maxBlood;
     }
 
     public void setBlood(int blood) {
         this.blood = blood;
-        if(this.maxBlood < blood || !this.isUnEqualBlood()) this.setMaxBlood(blood);
+        if(this.maxBlood < blood || !this.isUnEqualBlood()) this.maxBlood = blood;
     }
 
     public void addSkill(skill s) {
@@ -72,7 +79,7 @@ public class sanguoshaCard {
         if(s.getId() != null) skillIds.add(s.getId());
     }
 
-    public void addSkills(skill[] skills) {
+    public void addSkills(Iterable<skill> skills) {
         for(skill s : skills) {
             this.skills.add(s);
             if(s.getId() != null) skillIds.add(s.getId());

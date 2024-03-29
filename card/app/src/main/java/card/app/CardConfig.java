@@ -12,15 +12,14 @@ import card.data.dataLoader;
 @Configuration
 public class CardConfig {
 
+    @Autowired
     private dataLoader dataloader;
 
-    public CardConfig(dataLoader dataloader) {
-        this.dataloader = dataloader;
-    }
-
+    /* 
     @Bean
     CommandLineRunner loadData() {
         return dataloader::loadData; 
     }
+    */
 
 }
