@@ -28,5 +28,10 @@
       "name": "data.resources.shenUrl",
       "type": "java.lang.String",
       "description": "default url for innerPrint of shen"
+    },
+    {
+      "name": "data.resources.monsterUrl",
+      "type": "java.lang.String",
+      "description": "default url for innerPrint of monster"
     }
   ]}
