@@ -13,7 +13,6 @@ import card.data.domain.sanguoshaCard;
 import card.data.domain.skill;
 import card.data.domain.yugiohCard;
 
-
 @Service
 public class dataLoader {
 
@@ -25,7 +24,7 @@ public class dataLoader {
 
     @Autowired
     public dataLoader(innerPrintRepository innerPrintRepo, sanguoshaCardRepository sanguoshaCardRepo,
-    yugiohCardRepository yugiohCardRepo, skillRepository skillRepo, dataConfig dataconfig) {
+            yugiohCardRepository yugiohCardRepo, skillRepository skillRepo, dataConfig dataconfig) {
         this.innerPrintRepo = innerPrintRepo;
         this.sanguoshaCardRepo = sanguoshaCardRepo;
         this.yugiohCardRepo = yugiohCardRepo;
@@ -49,18 +48,22 @@ public class dataLoader {
         innerPrintRepo.deleteAll().subscribe();
         skillRepo.deleteAll().subscribe();
         sanguoshaCardRepo.deleteAll().subscribe();
-        
-        //未知卡
+
+        // 未知卡
         sanguoshaCard unknown = new sanguoshaCard(sanguoshaCard.countryType.valueOf("SHEN"));
 
-        innerPrintRepo.save(sanguoxiu).subscribe(res -> {unknown.setPrint(res);}); 
+        innerPrintRepo.save(sanguoxiu).subscribe(res -> {
+            unknown.setPrint(res);
+        });
 
         unknown.setName("玉米");
         unknown.setTitle("谦者不名");
 
         sanguoshaCard weiWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("WEI"));
 
-        innerPrintRepo.save(wei).subscribe(res -> {weiWuJiang.setPrint(res);});
+        innerPrintRepo.save(wei).subscribe(res -> {
+            weiWuJiang.setPrint(res);
+        });
 
         weiWuJiang.setName("戏志才");
         weiWuJiang.setTitle("负俗的天才");
@@ -68,15 +71,19 @@ public class dataLoader {
                 new skill("天妒", "当你的判定牌生效后，你可以获得此牌。"),
                 new skill("先辅", "锁定技，游戏开始时，你选择一名其他角色，当其受到伤害后，你受到等量的伤害；当其回复体力后，你回复等量的体力。"),
                 new skill("筹策", "当你受到1点伤害后，你可以进行判定，若结果为：黑色，你弃置一名角色区域里的一张牌；红色，你令一名角色摸一张牌（先辅的角色摸两张）。")))
-                .subscribe(res -> {weiWuJiang.addSkill(res);});
+                .subscribe(res -> {
+                    weiWuJiang.addSkill(res);
+                });
         weiWuJiang.setMaxBlood(3);
         weiWuJiang.setPrinter("眉毛子");
         weiWuJiang.setNumber("WEI 055");
         weiWuJiang.setCopyright("DIY");
 
-        //鲍三娘
+        // 鲍三娘
         sanguoshaCard shuWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("SHU"));
-        innerPrintRepo.save(shu).subscribe(res -> {shuWuJiang.setPrint(res);});
+        innerPrintRepo.save(shu).subscribe(res -> {
+            shuWuJiang.setPrint(res);
+        });
 
         shuWuJiang.setName("鲍三娘");
         shuWuJiang.setTitle("南中武娘");
@@ -84,15 +91,19 @@ public class dataLoader {
                 new skill("武娘", "当你使用或打出【杀】时，你可以获得一名其他角色的一张牌。若如此做，其摸一张牌。若你发动过“许身”，姓名为关索的角色摸一张牌。"),
                 new skill("许身", "限定技，当你进入濒死状态后，你可以回复1点体力并获得“镇南”，然后当你脱离濒死状态后，若关索不在场，你可令一名其他角色选择是否用关索代替其武将并令其摸三张牌。"),
                 new skill("☆镇南", "当普通锦囊牌指定第一个目标后，若目标对应的角色数大于1，你可以对一名其他角色造成1点伤害。")))
-                .subscribe(res -> {shuWuJiang.addSkill(res);});
+                .subscribe(res -> {
+                    shuWuJiang.addSkill(res);
+                });
         shuWuJiang.setMaxBlood(3);
         shuWuJiang.setPrinter("DH");
         shuWuJiang.setNumber("SHU 070");
         shuWuJiang.setCopyright("DIY");
 
-        //孙鲁班
+        // 孙鲁班
         sanguoshaCard wuWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("WU"));
-        innerPrintRepo.save(wu).subscribe(res -> {wuWuJiang.setPrint(res);});
+        innerPrintRepo.save(wu).subscribe(res -> {
+            wuWuJiang.setPrint(res);
+        });
 
         wuWuJiang.setName("孙鲁班");
         wuWuJiang.setTitle("为虎作伥");
@@ -105,10 +116,12 @@ public class dataLoader {
         wuWuJiang.setNumber("YJ307");
         wuWuJiang.setCopyright("@一将成名2014");
 
-        //谋貂蝉
+        // 谋貂蝉
         sanguoshaCard qunWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("QUN"));
-        innerPrintRepo.save(qun).subscribe(res -> {qunWuJiang.setPrint(res);});
-        
+        innerPrintRepo.save(qun).subscribe(res -> {
+            qunWuJiang.setPrint(res);
+        });
+
         qunWuJiang.setName("谋貂蝉");
         qunWuJiang.setTitle("离间计");
         skillRepo.saveAll(Arrays.asList(
@@ -119,10 +132,11 @@ public class dataLoader {
         qunWuJiang.setNumber("MG.QUN 003");
         qunWuJiang.setCopyright("@谋攻篇-识");
 
-        //神荀彧
+        // 神荀彧
         sanguoshaCard shenWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("SHEN"));
-        innerPrintRepo.save(shen).subscribe(res -> {shenWuJiang.setPrint(res);});
-        
+        innerPrintRepo.save(shen).subscribe(res -> {
+            shenWuJiang.setPrint(res);
+        });
 
         shenWuJiang.setName("神荀彧");
         shenWuJiang.setTitle("洞心先识");
@@ -137,29 +151,51 @@ public class dataLoader {
         shenWuJiang.setNumber("LE019");
         shenWuJiang.setCopyright("@始计篇·智");
 
-        sanguoshaCardRepo.saveAll(Arrays.asList(unknown, weiWuJiang, shuWuJiang, wuWuJiang, qunWuJiang, shenWuJiang)).subscribe();
+        sanguoshaCardRepo.saveAll(Arrays.asList(unknown, weiWuJiang, shuWuJiang, wuWuJiang, qunWuJiang, shenWuJiang))
+                .subscribe();
     }
 
     private void loadYuGiOh() {
-        /* 
         innerPrint monster = new innerPrint(dataconfig.monsterUrl);
         innerPrint magic = new innerPrint(dataconfig.magicUrl);
         innerPrint trap = new innerPrint(dataconfig.trapUrl);
         innerPrint soulpendulum = new innerPrint(dataconfig.soulpendulumUrl);
 
         yugiohCard blueeyewhitedragon = new yugiohCard();
+
         blueeyewhitedragon.setCardCatalog(yugiohCard.CardCatalog.valueOf("MONSTER"));
         blueeyewhitedragon.setElementType(yugiohCard.ElementType.valueOf("LIGHT"));
         blueeyewhitedragon.setCardtype(yugiohCard.CardType.valueOf("ORIGIN"));
-        blueeyewhitedragon.setPrint(monster);
+
+        innerPrintRepo.save(monster).subscribe(res -> {
+            blueeyewhitedragon.setPrint(res);
+        });
+
         blueeyewhitedragon.setName("青眼白龙");
         blueeyewhitedragon.setGradientColor(true);
-        blueeyewhitedragon.setSkill(new skill("龙族/通常", "以高攻击力著称的传说之龙，任何对手都能将之粉碎，其破坏力不可估量"));
+        skillRepo.save(new skill("龙族/通常", "以高攻击力著称的传说之龙，任何对手都能将之粉碎，其破坏力不可估量")).subscribe(res -> {
+            blueeyewhitedragon.setSkill(res);
+        });
         blueeyewhitedragon.setAtk(3000);
         blueeyewhitedragon.setDef(2500);
         blueeyewhitedragon.setStars(8);
-
+        blueeyewhitedragon.setDesigner("集英社");
+        blueeyewhitedragon.setNumber("89631139");
+        blueeyewhitedragon.setCopyright("@1996 KAZUKI TAKAHASHI");
         yugiohCardRepo.save(blueeyewhitedragon);
-        */
+
+        yugiohCard fusion = new yugiohCard();
+
+        fusion.setCardCatalog(yugiohCard.CardCatalog.valueOf("MAGIC"));
+        fusion.setElementType(yugiohCard.ElementType.valueOf("NONE"));
+        fusion.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
+        innerPrintRepo.save(magic).subscribe(res -> {
+            fusion.setPrint(res);
+        });
+
+        fusion.setName("融合");
+        fusion.setDesigner("集英社");
+        fusion.setNumber("24094653");
+        fusion.setCopyright("@1996 KAZUKI TAKAHASHI");
     }
 }
