@@ -173,7 +173,7 @@ public class dataLoader {
 
         blueeyewhitedragon.setName("青眼白龙");
         blueeyewhitedragon.setGradientColor(true);
-        skillRepo.save(new skill("龙族/通常", "以高攻击力著称的传说之龙，任何对手都能将之粉碎，其破坏力不可估量")).subscribe(res -> {
+        skillRepo.save(new skill("龙族/通常", "以高攻击力著称的传说之龙。任何对手都能将之粉碎，其破坏力不可估量。")).subscribe(res -> {
             blueeyewhitedragon.setSkill(res);
         });
         blueeyewhitedragon.setAtk(3000);
@@ -194,8 +194,45 @@ public class dataLoader {
         });
 
         fusion.setName("融合");
+        skillRepo.save(new skill("", "①：自己的手卡·场上的怪兽作为融合素材，把１只融合怪兽融合召唤。")).subscribe(res -> {
+            fusion.setSkill(res);
+        });
         fusion.setDesigner("集英社");
         fusion.setNumber("24094653");
         fusion.setCopyright("@1996 KAZUKI TAKAHASHI");
+
+        yugiohCard Holyreflector = new yugiohCard();
+        Holyreflector.setCardCatalog(yugiohCard.CardCatalog.valueOf("TRAP"));
+        Holyreflector.setElementType(yugiohCard.ElementType.valueOf("NONE"));
+        Holyreflector.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
+        innerPrintRepo.save(trap).subscribe(res -> {
+            Holyreflector.setPrint(res);
+        });
+
+        Holyreflector.setName("神圣防护罩-反射镜力");
+        skillRepo.save(new skill("", "①：对方怪兽的攻击宣言时才能发动。对方场上的攻击表示怪兽全部破坏。")).subscribe(res -> {
+            Holyreflector.setSkill(res);
+        });
+        Holyreflector.setDesigner("集英社");
+        Holyreflector.setNumber("44095762");
+        Holyreflector.setCopyright("@1996 KAZUKI TAKAHASHI");
+
+        yugiohCard Heterochromaticeye = new yugiohCard();
+        Heterochromaticeye.setCardCatalog(yugiohCard.CardCatalog.valueOf("SOULPENDULUM"));
+        Heterochromaticeye.setElementType(yugiohCard.ElementType.valueOf("DARK"));
+        Heterochromaticeye.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
+        innerPrintRepo.save(soulpendulum).subscribe(res -> {
+            Heterochromaticeye.setPrint(res);
+        });
+
+        Heterochromaticeye.setName("异色眼灵摆龙");
+        skillRepo.save(new skill("龙族/灵摆/效果",
+                "这个卡名的①②的灵摆效果１回合各能使用１次。①：可以把自己的灵摆怪兽的战斗发生的对自己的战斗伤害变成０。②：自己结束阶段才能发动。这张卡破坏，从卡组把１只攻击力１５００以下的灵摆怪兽加入手卡。"))
+                .subscribe(res -> {
+                    Heterochromaticeye.setSkill(res);
+                });
+        Heterochromaticeye.setDesigner("集英社");
+        Heterochromaticeye.setNumber("16178681");
+        Heterochromaticeye.setCopyright("@1996 KAZUKI TAKAHASHI");
     }
 }
