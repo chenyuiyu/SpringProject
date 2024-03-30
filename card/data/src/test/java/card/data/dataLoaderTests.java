@@ -11,17 +11,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.context.annotation.ComponentScan;
 
 import card.data.config.dataConfig;
-import card.domain.innerPrint;
-import card.domain.sanguoshaCard;
-import card.domain.skill;
+import card.data.domain.cardOrder;
+import card.data.domain.innerPrint;
+import card.data.domain.sanguoshaCard;
+import card.data.domain.skill;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataR2dbcTest
+@ComponentScan(basePackages = "card.data")
 public class dataLoaderTests {
     @Autowired
     innerPrintRepository innerPrintRepo;
@@ -32,9 +35,13 @@ public class dataLoaderTests {
     @Autowired
     skillRepository skillRepo;
 
+    @Autowired
+    cardOrderRepository cardOrderRepo;
+
     private Set<innerPrint> printSet;
     private Set<skill> skillSet;
     private Set<sanguoshaCard> sanguoshacardSet;
+    private cardOrder order;
 
     @BeforeEach
     public void setup() {
@@ -181,9 +188,13 @@ public class dataLoaderTests {
         shenWuJiang.setNumber("LE019");
         shenWuJiang.setCopyright("@始计篇·智");
 
-        Flux<sanguoshaCard> c1 = sanguoshaCardRepo.saveAll(Arrays.asList(unknown, weiWuJiang, shuWuJiang, wuWuJiang, qunWuJiang, shenWuJiang));
+        order = new cardOrder();
+
+        List<sanguoshaCard> cards = Arrays.asList(unknown, weiWuJiang, shuWuJiang, wuWuJiang, qunWuJiang, shenWuJiang);
+        Flux<sanguoshaCard> c1 = sanguoshaCardRepo.saveAll(cards).doOnNext(card -> order.addSanGuoShaCard(card));
         StepVerifier.create(c1).expectNextCount(6).verifyComplete();
-        sanguoshacardSet.addAll(Arrays.asList(unknown, weiWuJiang, shuWuJiang, wuWuJiang, qunWuJiang, shenWuJiang));
+        sanguoshacardSet.addAll(cards);
+        StepVerifier.create(cardOrderRepo.save(order).doOnNext(od -> this.order = od)).expectNextCount(1).verifyComplete();
     }
 
     @Test
@@ -246,5 +257,10 @@ public class dataLoaderTests {
                     }
                 } 
             ).verifyComplete();
+    }
+
+    @Test
+    public void testCardOrder() {
+        
     }
 }

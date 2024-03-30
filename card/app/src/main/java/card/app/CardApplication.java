@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 import card.data.dataLoader;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"card.data"})
 public class CardApplication {
 
 	public static void main(String[] args) {
@@ -19,7 +18,7 @@ public class CardApplication {
 
     @Bean
     @Profile("!prod")
-    CommandLineRunner loadData(@Autowired dataLoader dataloader) {
+    CommandLineRunner loadData(dataLoader dataloader) {
         return dataloader::loadData; 
     }
 

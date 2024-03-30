@@ -8,29 +8,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import card.data.config.dataConfig;
-import card.domain.innerPrint;
-import card.domain.sanguoshaCard;
-import card.domain.yugiohCard;
-import card.domain.skill;
+import card.data.domain.innerPrint;
+import card.data.domain.sanguoshaCard;
+import card.data.domain.skill;
+import card.data.domain.yugiohCard;
 
 
 @Service
 public class dataLoader {
 
-    @Autowired
     private innerPrintRepository innerPrintRepo;
-
-    @Autowired
     private sanguoshaCardRepository sanguoshaCardRepo;
-
-    @Autowired
     private yugiohCardRepository yugiohCardRepo;
-
-    @Autowired
     private skillRepository skillRepo;
-
-    @Autowired
     private dataConfig dataconfig;
+
+    public dataLoader(innerPrintRepository innerPrintRepo, sanguoshaCardRepository sanguoshaCardRepo,
+    yugiohCardRepository yugiohCardRepo, skillRepository skillRepo) {
+        this.innerPrintRepo = innerPrintRepo;
+        this.sanguoshaCardRepo = sanguoshaCardRepo;
+        this.yugiohCardRepo = yugiohCardRepo;
+        this.skillRepo = skillRepo;
+    }
 
     public void loadData(String... args) throws Exception {
         loadSanGuoSha();
@@ -140,6 +139,7 @@ public class dataLoader {
     }
 
     private void loadYuGiOh() {
+        /* 
         innerPrint monster = new innerPrint(dataconfig.monsterUrl);
         innerPrint magic = new innerPrint(dataconfig.magicUrl);
         innerPrint trap = new innerPrint(dataconfig.trapUrl);
@@ -158,5 +158,6 @@ public class dataLoader {
         blueeyewhitedragon.setStars(8);
 
         yugiohCardRepo.save(blueeyewhitedragon);
+        */
     }
 }

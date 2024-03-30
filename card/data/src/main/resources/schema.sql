@@ -2,6 +2,7 @@ drop table if exists InnerPrint;
 drop table if exists SanGuoShaCard;
 drop table if exists Skill;
 drop table if exists YuGiOhCard;
+drop table if exists CardOrder;
 
 create table InnerPrint (
     id identity,
@@ -25,7 +26,7 @@ create table SanGuoShaCard (
     printer varchar(50),
     copyright varchar(50),
     number varchar(50),
-    skill_Ids int array
+    skill_Ids bigint array
 );
 
 create table Skill (
@@ -49,4 +50,17 @@ create table YuGiOhCard (
     stars int not null,
     atk int not null,
     def int not null
+);
+
+create table CardOrder (
+    id identity,
+    sanguosha_Card_Ids bigint array,
+    yugioh_Card_Ids bigint array,
+    name varchar(50),
+    province varchar(50),
+    city varchar(50),
+    state varchar(50),
+    detailed_Location varchar(500),
+    cc_Number varchar(20),
+    Order_Description varchar(500)
 );

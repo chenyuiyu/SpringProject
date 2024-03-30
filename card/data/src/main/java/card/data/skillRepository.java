@@ -1,8 +1,10 @@
 package card.data;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.stereotype.Repository;
 
-import card.domain.skill;
+import card.data.domain.skill;
+
 
 public interface skillRepository extends ReactiveCrudRepository<skill, Long> {
     

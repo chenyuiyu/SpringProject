@@ -28,35 +28,5 @@
     "name": "data.resources.shenUrl",
     "type": "java.lang.String",
     "description": "default url for innerPrint of shen"
-  },
-  {
-    "name": "data.test.resources.wei-url",
-    "type": "java.lang.String",
-    "description": "default url for innerPrint of wei in test"
-  },
-  {
-    "name": "data.test.resources.shu-url",
-    "type": "java.lang.String",
-    "description": "default url for innerPrint of shu in test"
-  },
-  {
-    "name": "data.test.resources.wu-url",
-    "type": "java.lang.String",
-    "description": "default url for innerPrint of wu in test"
-  },
-  {
-    "name": "data.test.resources.qun-url",
-    "type": "java.lang.String",
-    "description": "default url for innerPrint of qun in test"
-  },
-  {
-    "name": "data.test.resources.sanguoxiu-url",
-    "type": "java.lang.String",
-    "description": "default url for innerPrint of sanguoxiu in test"
-  },
-  {
-    "name": "data.test.resources.shenUrl",
-    "type": "java.lang.String",
-    "description": "default url for innerPrint of shen in test"
   }
 ]}

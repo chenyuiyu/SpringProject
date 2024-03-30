@@ -10,10 +10,9 @@
     </parent>
 
     <groupId>card</groupId>
-    <artifactId>data</artifactId>
+    <artifactId>api</artifactId>
     <packaging>jar</packaging>
-	<name>data</name>
-	<description>Card Resource Repository</description>
+    <description>Card Design API</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -23,19 +22,20 @@
 
     <dependencies>
         <dependency>
+            <groupId>card</groupId>
+            <artifactId>data</artifactId>
+            <version>${card.version}</version>
+        </dependency>
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
+        
+		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -44,8 +44,7 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter-artemis</artifactId>
 		</dependency>
 
 		<dependency>
@@ -54,22 +53,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Test dependencies -->
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>io.r2dbc</groupId>
-			<artifactId>r2dbc-h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-        
-        <dependency>
-            <groupId>card</groupId>
-            <artifactId>domain</artifactId>
-            <version>${card.version}</version>
-        </dependency>
+    </dependencies>
 
-	</dependencies>
 </project>

@@ -12,7 +12,7 @@ public class dataConfig {
     public String wuUrl;// 吴
     public String weiUrl;// 魏
     public String shuUrl;// 蜀
-
+    /* 
         // 类型
         public String monsterUrl;
         public String magicUrl;
@@ -38,4 +38,5 @@ public class dataConfig {
         public String excessUrl;
         public String connectUrl;
         public String ramificationUrl;
+    */
 }
