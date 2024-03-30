@@ -1,4 +1,4 @@
-package card.app;
+package card;
 
 import org.junit.jupiter.api.Test;
 

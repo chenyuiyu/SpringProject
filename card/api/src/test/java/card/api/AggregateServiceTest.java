@@ -32,28 +32,28 @@ import reactor.test.StepVerifier;
 
 @DataR2dbcTest
 @DirtiesContext
-@ComponentScan(basePackages = {"card.data"})
 public class AggregateServiceTest {
 
-    @Autowired 
     private cardOrderRepository cardOrderRepo;
-
-    @Autowired 
     private sanguoshaCardRepository sanguoshaCardRepo;
-
-    @Autowired 
     private yugiohCardRepository yugiohCardRepo;
-
-    @Autowired 
     private innerPrintRepository innerPrintRepo;
-
-    @Autowired 
     private skillRepository skillRepo;
 
     private sanguoshaCardAggregateService sanguoshaCardAggregator;
     private yugiohCardAggregateService yugiohCardAggregator;
     private cardOrderAggregateService cardOrderAggregator;
 
+    @Autowired
+    public AggregateServiceTest(sanguoshaCardRepository sanguoshaCardRepo, yugiohCardRepository yugiohCardRepo,
+    cardOrderRepository cardOrderRepo, innerPrintRepository innerPrintRepo, skillRepository skillRepo) {
+        this.sanguoshaCardRepo = sanguoshaCardRepo;
+        this.yugiohCardRepo = yugiohCardRepo;
+        this.innerPrintRepo = innerPrintRepo;
+        this.cardOrderRepo = cardOrderRepo;
+        this.skillRepo = skillRepo;
+    }
+    
     @BeforeEach
     public void setup() {
         sanguoshaCardAggregator = new sanguoshaCardAggregateService(innerPrintRepo, skillRepo, sanguoshaCardRepo);

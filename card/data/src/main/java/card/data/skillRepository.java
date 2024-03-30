@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import card.data.domain.skill;
 
-
+@Repository
 public interface skillRepository extends ReactiveCrudRepository<skill, Long> {
     
 }

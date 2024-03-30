@@ -23,12 +23,14 @@ public class dataLoader {
     private skillRepository skillRepo;
     private dataConfig dataconfig;
 
+    @Autowired
     public dataLoader(innerPrintRepository innerPrintRepo, sanguoshaCardRepository sanguoshaCardRepo,
-    yugiohCardRepository yugiohCardRepo, skillRepository skillRepo) {
+    yugiohCardRepository yugiohCardRepo, skillRepository skillRepo, dataConfig dataconfig) {
         this.innerPrintRepo = innerPrintRepo;
         this.sanguoshaCardRepo = sanguoshaCardRepo;
         this.yugiohCardRepo = yugiohCardRepo;
         this.skillRepo = skillRepo;
+        this.dataconfig = dataconfig;
     }
 
     public void loadData(String... args) throws Exception {

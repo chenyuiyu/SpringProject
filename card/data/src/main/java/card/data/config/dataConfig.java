@@ -3,8 +3,11 @@ package card.data.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import lombok.Data;
+
 @ConfigurationProperties(prefix = "data.resources")
 @Component
+@Data
 public class dataConfig {
     public String sanguoxiuUrl;// 三国秀
     public String qunUrl;// 群

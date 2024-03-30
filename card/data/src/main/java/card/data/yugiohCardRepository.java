@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import card.data.domain.yugiohCard;
 
-
+@Repository
 public interface yugiohCardRepository extends ReactiveCrudRepository<yugiohCard, Long>{
     
 }
