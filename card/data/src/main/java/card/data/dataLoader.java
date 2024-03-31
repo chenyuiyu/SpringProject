@@ -32,7 +32,7 @@ public class dataLoader {
 
     public void loadData(String... args) throws Exception {
         loadSanGuoSha();
-        // loadYuGiOh();
+        loadYuGiOh();
     }
 
     private void loadSanGuoSha() {
