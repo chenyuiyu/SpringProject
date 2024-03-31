@@ -10,4 +10,5 @@ public class TestConfig {
     public static final String qunUrl = "sanguosha/wujiang/【群】谋貂蝉.jpg";// 群
 
     public static final String monsterUrl = "yugioh.card.monster/blue-eyes.00ea670f.jpg";
+    public static final String magicUrl = "yugioh.card.magic/fusion.jpg";
 }

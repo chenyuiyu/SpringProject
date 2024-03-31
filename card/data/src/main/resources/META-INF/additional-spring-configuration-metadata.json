@@ -33,5 +33,10 @@
       "name": "data.resources.monsterUrl",
       "type": "java.lang.String",
       "description": "default url for innerPrint of monster"
+    },
+    {
+      "name": "data.resources.magicUrl",
+      "type": "java.lang.String",
+      "description": "default url for innerPrint of magic"
     }
   ]}

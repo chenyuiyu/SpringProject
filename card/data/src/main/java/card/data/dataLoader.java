@@ -1,10 +1,8 @@
 package card.data;
 
 import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
 import org.springframework.stereotype.Service;
 
 import card.data.config.dataConfig;
@@ -34,7 +32,7 @@ public class dataLoader {
 
     public void loadData(String... args) throws Exception {
         loadSanGuoSha();
-        loadYuGiOh();
+        // loadYuGiOh();
     }
 
     private void loadSanGuoSha() {
@@ -156,83 +154,88 @@ public class dataLoader {
     }
 
     private void loadYuGiOh() {
-        innerPrint monster = new innerPrint(dataconfig.monsterUrl);
-        innerPrint magic = new innerPrint(dataconfig.magicUrl);
-        innerPrint trap = new innerPrint(dataconfig.trapUrl);
-        innerPrint soulpendulum = new innerPrint(dataconfig.soulpendulumUrl);
+        // innerPrint monster = new innerPrint(dataconfig.monsterUrl);
+        // innerPrint magic = new innerPrint(dataconfig.magicUrl);
+        // innerPrint trap = new innerPrint(dataconfig.trapUrl);
+        // innerPrint soulpendulum = new innerPrint(dataconfig.soulpendulumUrl);
 
-        yugiohCard blueeyewhitedragon = new yugiohCard();
+        // yugiohCard blueeyewhitedragon = new yugiohCard();
+        // blueeyewhitedragon.setCardCatalog(yugiohCard.CardCatalog.valueOf("MONSTER"));
+        // blueeyewhitedragon.setElementType(yugiohCard.ElementType.valueOf("LIGHT"));
+        // blueeyewhitedragon.setCardtype(yugiohCard.CardType.valueOf("ORIGIN"));
 
-        blueeyewhitedragon.setCardCatalog(yugiohCard.CardCatalog.valueOf("MONSTER"));
-        blueeyewhitedragon.setElementType(yugiohCard.ElementType.valueOf("LIGHT"));
-        blueeyewhitedragon.setCardtype(yugiohCard.CardType.valueOf("ORIGIN"));
+        // innerPrintRepo.save(monster).subscribe(res -> {
+        // blueeyewhitedragon.setPrint(res);
+        // });
 
-        innerPrintRepo.save(monster).subscribe(res -> {
-            blueeyewhitedragon.setPrint(res);
-        });
+        // blueeyewhitedragon.setName("青眼白龙");
+        // blueeyewhitedragon.setGradientColor(true);
+        // skillRepo.save(new skill("龙族/通常",
+        // "以高攻击力著称的传说之龙。任何对手都能将之粉碎，其破坏力不可估量。")).subscribe(res -> {
+        // blueeyewhitedragon.setSkill(res);
+        // });
+        // blueeyewhitedragon.setAtk(3000);
+        // blueeyewhitedragon.setDef(2500);
+        // blueeyewhitedragon.setStars(8);
+        // blueeyewhitedragon.setDesigner("集英社");
+        // blueeyewhitedragon.setNumber("89631139");
+        // blueeyewhitedragon.setCopyright("@1996 KAZUKI TAKAHASHI");
+        // yugiohCardRepo.save(blueeyewhitedragon);
 
-        blueeyewhitedragon.setName("青眼白龙");
-        blueeyewhitedragon.setGradientColor(true);
-        skillRepo.save(new skill("龙族/通常", "以高攻击力著称的传说之龙。任何对手都能将之粉碎，其破坏力不可估量。")).subscribe(res -> {
-            blueeyewhitedragon.setSkill(res);
-        });
-        blueeyewhitedragon.setAtk(3000);
-        blueeyewhitedragon.setDef(2500);
-        blueeyewhitedragon.setStars(8);
-        blueeyewhitedragon.setDesigner("集英社");
-        blueeyewhitedragon.setNumber("89631139");
-        blueeyewhitedragon.setCopyright("@1996 KAZUKI TAKAHASHI");
-        yugiohCardRepo.save(blueeyewhitedragon);
+        // yugiohCard fusion = new yugiohCard();
+        // fusion.setCardCatalog(yugiohCard.CardCatalog.valueOf("MAGIC"));
+        // fusion.setElementType(yugiohCard.ElementType.valueOf("NONE"));
+        // fusion.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
+        // innerPrintRepo.save(magic).subscribe(res -> {
+        // fusion.setPrint(res);
+        // });
 
-        yugiohCard fusion = new yugiohCard();
+        // fusion.setName("融合");
+        // skillRepo.save(new skill("",
+        // "①：自己的手卡·场上的怪兽作为融合素材，把１只融合怪兽融合召唤。")).subscribe(res -> {
+        // fusion.setSkill(res);
+        // });
+        // fusion.setDesigner("集英社");
+        // fusion.setNumber("24094653");
+        // fusion.setCopyright("@1996 KAZUKI TAKAHASHI");
 
-        fusion.setCardCatalog(yugiohCard.CardCatalog.valueOf("MAGIC"));
-        fusion.setElementType(yugiohCard.ElementType.valueOf("NONE"));
-        fusion.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
-        innerPrintRepo.save(magic).subscribe(res -> {
-            fusion.setPrint(res);
-        });
+        // yugiohCard Holyreflector = new yugiohCard();
+        // Holyreflector.setCardCatalog(yugiohCard.CardCatalog.valueOf("TRAP"));
+        // Holyreflector.setElementType(yugiohCard.ElementType.valueOf("NONE"));
+        // Holyreflector.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
+        // innerPrintRepo.save(trap).subscribe(res -> {
+        // Holyreflector.setPrint(res);
+        // });
 
-        fusion.setName("融合");
-        skillRepo.save(new skill("", "①：自己的手卡·场上的怪兽作为融合素材，把１只融合怪兽融合召唤。")).subscribe(res -> {
-            fusion.setSkill(res);
-        });
-        fusion.setDesigner("集英社");
-        fusion.setNumber("24094653");
-        fusion.setCopyright("@1996 KAZUKI TAKAHASHI");
+        // Holyreflector.setName("神圣防护罩-反射镜力");
+        // skillRepo.save(new skill("",
+        // "①：对方怪兽的攻击宣言时才能发动。对方场上的攻击表示怪兽全部破坏。")).subscribe(res -> {
+        // Holyreflector.setSkill(res);
+        // });
+        // Holyreflector.setDesigner("集英社");
+        // Holyreflector.setNumber("44095762");
+        // Holyreflector.setCopyright("@1996 KAZUKI TAKAHASHI");
 
-        yugiohCard Holyreflector = new yugiohCard();
-        Holyreflector.setCardCatalog(yugiohCard.CardCatalog.valueOf("TRAP"));
-        Holyreflector.setElementType(yugiohCard.ElementType.valueOf("NONE"));
-        Holyreflector.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
-        innerPrintRepo.save(trap).subscribe(res -> {
-            Holyreflector.setPrint(res);
-        });
+        // yugiohCard Heterochromaticeye = new yugiohCard();
+        // Heterochromaticeye.setCardCatalog(yugiohCard.CardCatalog.valueOf("SOULPENDULUM"));
+        // Heterochromaticeye.setElementType(yugiohCard.ElementType.valueOf("DARK"));
+        // Heterochromaticeye.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
+        // innerPrintRepo.save(soulpendulum).subscribe(res -> {
+        // Heterochromaticeye.setPrint(res);
+        // });
 
-        Holyreflector.setName("神圣防护罩-反射镜力");
-        skillRepo.save(new skill("", "①：对方怪兽的攻击宣言时才能发动。对方场上的攻击表示怪兽全部破坏。")).subscribe(res -> {
-            Holyreflector.setSkill(res);
-        });
-        Holyreflector.setDesigner("集英社");
-        Holyreflector.setNumber("44095762");
-        Holyreflector.setCopyright("@1996 KAZUKI TAKAHASHI");
+        // Heterochromaticeye.setName("异色眼灵摆龙");
+        // skillRepo.save(new skill("龙族/灵摆/效果",
+        // "这个卡名的①②的灵摆效果１回合各能使用１次。①：可以把自己的灵摆怪兽的战斗发生的对自己的战斗伤害变成０。②：自己结束阶段才能发动。这张卡破坏，从卡组把１只攻击力１５００以下的灵摆怪兽加入手卡。"))
+        // .subscribe(res -> {
+        // Heterochromaticeye.setSkill(res);
+        // });
+        // Heterochromaticeye.setDesigner("集英社");
+        // Heterochromaticeye.setNumber("16178681");
+        // Heterochromaticeye.setCopyright("@1996 KAZUKI TAKAHASHI");
 
-        yugiohCard Heterochromaticeye = new yugiohCard();
-        Heterochromaticeye.setCardCatalog(yugiohCard.CardCatalog.valueOf("SOULPENDULUM"));
-        Heterochromaticeye.setElementType(yugiohCard.ElementType.valueOf("DARK"));
-        Heterochromaticeye.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
-        innerPrintRepo.save(soulpendulum).subscribe(res -> {
-            Heterochromaticeye.setPrint(res);
-        });
-
-        Heterochromaticeye.setName("异色眼灵摆龙");
-        skillRepo.save(new skill("龙族/灵摆/效果",
-                "这个卡名的①②的灵摆效果１回合各能使用１次。①：可以把自己的灵摆怪兽的战斗发生的对自己的战斗伤害变成０。②：自己结束阶段才能发动。这张卡破坏，从卡组把１只攻击力１５００以下的灵摆怪兽加入手卡。"))
-                .subscribe(res -> {
-                    Heterochromaticeye.setSkill(res);
-                });
-        Heterochromaticeye.setDesigner("集英社");
-        Heterochromaticeye.setNumber("16178681");
-        Heterochromaticeye.setCopyright("@1996 KAZUKI TAKAHASHI");
+        // yugiohCardRepo.saveAll(Arrays.asList(blueeyewhitedragon, fusion,
+        // Holyreflector, Heterochromaticeye))
+        // .subscribe();
     }
 }
