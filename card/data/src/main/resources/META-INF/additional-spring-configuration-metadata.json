@@ -28,5 +28,25 @@
       "name": "data.resources.shenUrl",
       "type": "java.lang.String",
       "description": "default url for innerPrint of shen"
+    },
+    {
+      "name": "data.resources.monsterUrl",
+      "type": "java.lang.String",
+      "description": "default url for innerPrint of monster"
+    },
+    {
+      "name": "data.resources.magicUrl",
+      "type": "java.lang.String",
+      "description": "default url for innerPrint of magic"
+    },
+    {
+      "name": "data.resources.trapUrl",
+      "type": "java.lang.String",
+      "description": "default url for innerPrint of trap"
+    },
+    {
+      "name": "data.resources.soulpendulumUrl",
+      "type": "java.lang.String",
+      "description": "default url for innerPrint of soulpendulum"
     }
   ]}
