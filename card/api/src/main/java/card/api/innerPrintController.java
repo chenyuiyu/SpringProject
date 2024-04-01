@@ -48,13 +48,12 @@ public class innerPrintController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<String> putInnerPrintById(@PathVariable Long id, @RequestBody innerPrint entity) {
+    public Mono<ResponseEntity<String>> putInnerPrintById(@PathVariable Long id, @RequestBody innerPrint entity) {
         if (!entity.getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Given innerPrint's ID doesn't match the ID in the path!");
+            return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Given innerPrint's ID doesn't match the ID in the path!"));
         }
-        innerPrintRepo.save(entity);
-        return ResponseEntity.ok("InnerPrint updated successfully!");
+        return innerPrintRepo.save(entity).map(res -> ResponseEntity.ok("InnerPrint updated successfully!"));
     }
 
     @PostMapping
