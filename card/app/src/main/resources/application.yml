@@ -13,3 +13,8 @@ data:
         wuUrl: "sanguosha/wujaing/【吴】孙鲁班.jpg"
         qunUrl: "sanguosha/wujiang/【群】谋貂蝉.jpg"
         shenUrl: "sanguosha.wujiang/【神】荀彧.jpg"
+
+security:
+    user:
+        name: chenyuiyu
+        password: "88888888"

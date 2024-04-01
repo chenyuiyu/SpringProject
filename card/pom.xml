@@ -24,6 +24,7 @@
         <module>app</module>
         <module>data</module>
 		<module>api</module>
+		<module>security</module>
     </modules>
 
 </project>

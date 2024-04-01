@@ -17,8 +17,12 @@ import org.mockito.InjectMocks;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import card.data.cardOrderRepository;
 import card.data.innerPrintRepository;
@@ -35,7 +39,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 @DataR2dbcTest
-public class AggregateServiceTest {
+public class AggregationServiceTest {
 
     @MockBean
     private cardOrderRepository cardOrderRepo;
@@ -73,28 +77,39 @@ public class AggregateServiceTest {
         Set<Long> ids = new HashSet<>();
         ids.add(1l); ids.add(2l);
 
+        //初始化插画仓库行为
         int n1 = TestConfig.getInInnerPrints().size();
         for(int i = 0; i < n1; i++) {
             when(innerPrintRepo.save(TestConfig.getInInnerPrints().get(i))).thenReturn(Mono.just(TestConfig.getOutInnerPrints().get(i)));
             when(innerPrintRepo.findById((long)(i + 1))).thenReturn(Mono.just(TestConfig.getOutInnerPrints().get(i)));
         }
+        when(innerPrintRepo.findAll()).thenReturn(Flux.fromIterable(TestConfig.getOutInnerPrints()));
+        when(innerPrintRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getOutInnerPrints()));
 
+        //初始化技能仓库行为
         int n2 = TestConfig.getInSkills().size();
         for(int i = 0; i < n2; i++) {
+            when(skillRepo.save(TestConfig.getInSkills().get(i))).thenReturn(Mono.just(TestConfig.getOutSkills().get(i)));
             when(skillRepo.findById((long)(i + 1))).thenReturn(Mono.just(TestConfig.getOutSkills().get(i)));
         }
         when(skillRepo.saveAll(TestConfig.getInSkills())).thenReturn(Flux.fromIterable(TestConfig.getOutSkills()));
         when(skillRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getOutSkills()));
 
+        //初始化三国杀卡牌仓库行为
         int n3 = TestConfig.getInSanguoshaCards().size();
         for(int i = 0; i < n3; i++) {
-            when(sanguoshaCardRepo.findById((long)(i + 1))).thenReturn(Mono.just(TestConfig.getOutSanguoshaCards().get(i)));
             when(sanguoshaCardRepo.save(TestConfig.getInSanguoshaCards().get(i))).thenReturn(Mono.just(TestConfig.getOutSanguoshaCards().get(i)));
+            when(sanguoshaCardRepo.findById((long)(i + 1))).thenReturn(Mono.just(TestConfig.getOutSanguoshaCards().get(i)));
         }
         when(sanguoshaCardRepo.saveAll(Flux.fromIterable(TestConfig.getInSanguoshaCards()))).thenReturn(Flux.fromIterable(TestConfig.getOutSanguoshaCards()));
+        when(sanguoshaCardRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getOutSanguoshaCards()));
         
+        //初始化订单仓库行为
         when(cardOrderRepo.save(TestConfig.getInorder())).thenReturn(Mono.just(TestConfig.getOutorder()));
         when(cardOrderRepo.findById(1l)).thenReturn(Mono.just(TestConfig.getOutorder()));
+
+        //初始化游戏王卡牌仓库行为
+        //TODO:
     }
 
     @Test

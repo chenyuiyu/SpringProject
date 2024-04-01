@@ -1,10 +1,4 @@
-drop table if exists InnerPrint;
-drop table if exists SanGuoShaCard;
-drop table if exists Skill;
-drop table if exists YuGiOhCard;
-drop table if exists CardOrder;
-
-create table InnerPrint (
+create table if not exists InnerPrint (
     id identity,
     X double not null,
     Y double NOT NULL,
@@ -12,7 +6,7 @@ create table InnerPrint (
     url varchar(50) not null  
 );
 
-create table SanGuoShaCard (
+create table if not exists SanGuoShaCard (
     id identity,
     frame_H double not null,
     frame_W double not null,
@@ -29,13 +23,13 @@ create table SanGuoShaCard (
     skill_Ids bigint array
 );
 
-create table Skill (
+create table if not exists Skill (
     id identity,
     header varchar(50) not null,
     description varchar(500) not null
 );
 
-create table YuGiOhCard (
+create table if not exists YuGiOhCard (
     id identity,
     name varchar(50),
     gradient_Color boolean,
@@ -52,7 +46,7 @@ create table YuGiOhCard (
     def int not null
 );
 
-create table CardOrder (
+create table if not exists CardOrder (
     id identity,
     sanguosha_Card_Ids bigint array,
     yugioh_Card_Ids bigint array,
@@ -63,4 +57,25 @@ create table CardOrder (
     detailed_Location varchar(500),
     cc_Number varchar(20),
     Order_Description varchar(500)
+);
+
+create table if not exists MyUser (
+    id identity,
+    username varchar(50) not null,
+    password varchar(50) not null,
+    fullname varchar(50),
+    province varchar(50),
+    city varchar(50),
+    state varchar(50),
+    detailed_Location varchar(500),
+    phone_Number varchar(20),
+    email varchar(50),
+    roles varchar(20) array
+);
+
+create table if not exists OrderHistory (
+    id identity,
+    user_Id bigint not null,
+    uncompleted_History_Order_Ids bigint array,
+    completed_History_Order_Ids bigint array
 );

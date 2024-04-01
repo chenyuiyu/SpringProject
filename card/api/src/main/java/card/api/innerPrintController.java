@@ -57,7 +57,7 @@ public class innerPrintController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<innerPrint>> postMethodName(@RequestBody Mono<innerPrint> entity, ServerRequest request) {
+    public Mono<ResponseEntity<innerPrint>> postInnerPrint(@RequestBody Mono<innerPrint> entity, ServerRequest request) {
         return entity.flatMap(innerPrintRepo::save)
         .map(
             p -> {

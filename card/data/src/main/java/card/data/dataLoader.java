@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import card.data.config.dataConfig;
+import card.data.domain.User;
 import card.data.domain.innerPrint;
+import card.data.domain.orderHistory;
 import card.data.domain.sanguoshaCard;
 import card.data.domain.skill;
 import card.data.domain.yugiohCard;
@@ -19,19 +21,26 @@ public class dataLoader {
     private skillRepository skillRepo;
     private dataConfig dataconfig;
 
+    private UserRepository userRepo;
+    private orderHistoryRepository orderHistoryRepo;
+
     @Autowired
     public dataLoader(innerPrintRepository innerPrintRepo, sanguoshaCardRepository sanguoshaCardRepo,
-            yugiohCardRepository yugiohCardRepo, skillRepository skillRepo, dataConfig dataconfig) {
+            yugiohCardRepository yugiohCardRepo, skillRepository skillRepo, dataConfig dataconfig,
+            UserRepository userRepo, orderHistoryRepository orderHistoryRepo) {
         this.innerPrintRepo = innerPrintRepo;
         this.sanguoshaCardRepo = sanguoshaCardRepo;
         this.yugiohCardRepo = yugiohCardRepo;
         this.skillRepo = skillRepo;
         this.dataconfig = dataconfig;
+        this.userRepo = userRepo;
+        this.orderHistoryRepo = orderHistoryRepo;
     }
 
     public void loadData(String... args) throws Exception {
         loadSanGuoSha();
         loadYuGiOh();
+        loadUser();
     }
 
     private void loadSanGuoSha() {
@@ -236,5 +245,14 @@ public class dataLoader {
         // yugiohCardRepo.saveAll(Arrays.asList(blueeyewhitedragon, fusion,
         // Holyreflector, Heterochromaticeye))
         // .subscribe();
+    }
+
+    private void loadUser() {
+        userRepo.save(new User("chenyuiyu", "88888888"))
+        .flatMap(
+            user -> {
+                return orderHistoryRepo.save(new orderHistory(user.getId()));
+            }
+        ).subscribe();
     }
 }
