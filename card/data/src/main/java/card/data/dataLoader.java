@@ -2,10 +2,6 @@ package card.data;
 
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
-=======
-
->>>>>>> 560f48141fe3c238770de8649ac89aa1d8384e2b
 import org.springframework.stereotype.Service;
 
 import card.data.config.dataConfig;

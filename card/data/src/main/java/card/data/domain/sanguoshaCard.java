@@ -60,7 +60,7 @@ public class sanguoshaCard {
 
     public void setPrint(innerPrint p) {
         this.print = p;
-        if(p.getId() != null) this.setPrintId(p.getId());
+        if(p != null && p.getId() != null) this.setPrintId(p.getId());
     }
 
     public void setMaxBlood(int maxBlood) {
@@ -75,13 +75,13 @@ public class sanguoshaCard {
 
     public void addSkill(skill s) {
         skills.add(s);
-        if(s.getId() != null) skillIds.add(s.getId());
+        if(s != null && s.getId() != null) skillIds.add(s.getId());
     }
 
     public void addSkills(Iterable<skill> skills) {
         for(skill s : skills) {
             this.skills.add(s);
-            if(s.getId() != null) skillIds.add(s.getId());
+            if(s != null && s.getId() != null) skillIds.add(s.getId());
         }
     }
 }

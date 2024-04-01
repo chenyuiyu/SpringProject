@@ -40,22 +40,26 @@ public class cardOrder {
     private String OrderDescription;//订单描述信息(备注)
 
     public void addSanGuoShaCard(sanguoshaCard card) {
+        if(card == null) return;
         this.sanguoshaCards.add(card);
         if(card.getId() != null) this.sanguoshaCardIds.add(card.getId());
     }
 
     public void addSanGuoShaCards(Iterable<sanguoshaCard> cards) {
+        if(cards == null) return;
         for(sanguoshaCard card : cards) {
             this.addSanGuoShaCard(card);
         }
     }
 
     public void addYuGiOhCard(yugiohCard card) {
+        if(card == null) return;
         this.yugiohCards.add(card);
         if(card.getId() != null) this.yugiohCardIds.add(card.getId());
     }
 
     public void addYuGiOhCards(Iterable<yugiohCard> cards) {
+        if(cards == null) return;
         for(yugiohCard card : cards) {
             this.addYuGiOhCard(card);
         }

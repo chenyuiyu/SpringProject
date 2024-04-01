@@ -1,5 +1,6 @@
 package card.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import card.data.innerPrintRepository;
@@ -15,8 +16,13 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class yugiohCardAggregateService {
 
+    @Autowired
     private yugiohCardRepository yugiohCardRepo;
+
+    @Autowired
     private skillRepository skillRepo;
+
+    @Autowired
     private innerPrintRepository innerPrintRepo;
 
     // @SuppressWarnings("null")

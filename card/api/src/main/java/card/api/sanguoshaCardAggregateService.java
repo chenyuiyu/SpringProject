@@ -3,6 +3,7 @@ package card.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import card.data.innerPrintRepository;
@@ -17,8 +18,13 @@ import reactor.core.publisher.Mono;
 @Service
 @AllArgsConstructor
 public class sanguoshaCardAggregateService {
+    @Autowired
     private innerPrintRepository innerPrintRepo;
+
+    @Autowired
     private skillRepository skillRepo;
+    
+    @Autowired
     private sanguoshaCardRepository sanguoshaCardRepo;
 
     @SuppressWarnings("null")

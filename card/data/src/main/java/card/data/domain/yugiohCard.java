@@ -70,11 +70,11 @@ public class yugiohCard {
 
     public void setSkill(skill s) {
         this.skill = s;
-        if(s.getId() != null) this.setSkillId(s.getId());
+        if(s != null && s.getId() != null) this.setSkillId(s.getId());
     }
 
     public void setPrint(innerPrint p) {
         this.print = p;
-        if(p.getId() != null) this.setPrintId(p.getId());
+        if(p != null && p.getId() != null) this.setPrintId(p.getId());
     }
 }
