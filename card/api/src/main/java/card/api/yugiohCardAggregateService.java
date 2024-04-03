@@ -2,6 +2,7 @@ package card.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import card.data.innerPrintRepository;
 import card.data.skillRepository;
@@ -26,6 +27,7 @@ public class yugiohCardAggregateService {
     private innerPrintRepository innerPrintRepo;
 
     // @SuppressWarnings("null")
+    //@Transactional
     public Mono<yugiohCard> save(Mono<yugiohCard> card) {
         // return card.flatMap(
         // c -> {

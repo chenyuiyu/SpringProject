@@ -14,8 +14,10 @@ import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.context.annotation.ComponentScan;
 
 import card.data.config.dataConfig;
+import card.data.domain.User;
 import card.data.domain.cardOrder;
 import card.data.domain.innerPrint;
+import card.data.domain.orderHistory;
 import card.data.domain.sanguoshaCard;
 import card.data.domain.skill;
 import reactor.core.publisher.Flux;
@@ -24,7 +26,6 @@ import reactor.test.StepVerifier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataR2dbcTest
-@ComponentScan(basePackages = "card.data")
 public class dataLoaderTests {
     @Autowired
     innerPrintRepository innerPrintRepo;
@@ -38,13 +39,32 @@ public class dataLoaderTests {
     @Autowired
     cardOrderRepository cardOrderRepo;
 
+    @Autowired
+    yugiohCardRepository yugiohCardRepo;
+
+    @Autowired
+    UserRepository userRepo;
+
+    @Autowired
+    orderHistoryRepository orderHistoryRepo;
+
     private Set<innerPrint> printSet;
     private Set<skill> skillSet;
     private Set<sanguoshaCard> sanguoshacardSet;
     private cardOrder order;
+    private User user;
+    private orderHistory history;
 
     @BeforeEach
     public void setup() {
+
+        innerPrintRepo.deleteAll().subscribe();
+        skillRepo.deleteAll().subscribe();
+        sanguoshaCardRepo.deleteAll().subscribe();
+        yugiohCardRepo.deleteAll().subscribe();
+        cardOrderRepo.deleteAll().subscribe();
+        orderHistoryRepo.deleteAll().subscribe();
+        userRepo.deleteAll().subscribe();
 
         this.printSet = new HashSet<>();
         this.skillSet = new HashSet<>();
@@ -188,13 +208,24 @@ public class dataLoaderTests {
         shenWuJiang.setNumber("LE019");
         shenWuJiang.setCopyright("@始计篇·智");
 
-        order = new cardOrder();
+        //订单
+        //TODO:添加游戏王卡牌到订单上
+        this.order = new cardOrder();
 
         List<sanguoshaCard> cards = Arrays.asList(unknown, weiWuJiang, shuWuJiang, wuWuJiang, qunWuJiang, shenWuJiang);
-        Flux<sanguoshaCard> c1 = sanguoshaCardRepo.saveAll(cards).doOnNext(card -> order.addSanGuoShaCard(card));
+        Flux<sanguoshaCard> c1 = sanguoshaCardRepo.saveAll(cards).doOnNext(card -> this.order.addSanGuoShaCard(card));
         StepVerifier.create(c1).expectNextCount(6).verifyComplete();
         sanguoshacardSet.addAll(cards);
-        StepVerifier.create(cardOrderRepo.save(order).doOnNext(od -> this.order = od)).expectNextCount(1).verifyComplete();
+        StepVerifier.create(cardOrderRepo.save(this.order)).expectNextCount(1).verifyComplete();
+        this.order.setSanguoshaCards(new ArrayList<>());
+        this.order.setYugiohCards(new ArrayList<>());
+
+        //用户及历史订单
+        this.user = new User("chenyuiyu", "88888888");
+        StepVerifier.create(userRepo.save(this.user).doOnNext(u -> this.history = new orderHistory(u.getUsername()))).expectNextCount(1).verifyComplete();
+        this.history.addUncompletedHistoryOrder(this.order);
+        StepVerifier.create(orderHistoryRepo.save(this.history)).expectNextCount(1).verifyComplete();
+
     }
 
     @Test
@@ -260,7 +291,39 @@ public class dataLoaderTests {
     }
 
     @Test
-    public void testCardOrder() {
-        
+    public void testCardOrderRepository() {
+        Flux<cardOrder> f = cardOrderRepo.findAll();
+        StepVerifier.create(f).expectNext(this.order).verifyComplete();
+    }
+
+    @Test
+    public void testUserRepository() {
+        StepVerifier.create(userRepo.findAll())
+        .expectNext(this.user)
+        .verifyComplete();
+    }
+
+    @Test
+    public void testOrderHistoryRepository() {
+        Flux<orderHistory> f = orderHistoryRepo.findAll()
+        .flatMap(
+            history -> {
+                if(history.getUncompletedHistoryOrderIds().isEmpty()) return Mono.just(history);
+                history.setUncompletedHistoryOrder(new ArrayList<>());
+                return cardOrderRepo.findAllById(history.getUncompletedHistoryOrderIds())
+                .doOnNext(order -> history.addUncompletedHistoryOrder(order))
+                .map(order -> history)
+                .last();
+            }
+        ).flatMap(
+            history -> {
+                if(history.getCompletedHistoryOrderIds().isEmpty()) return Mono.just(history);
+                return cardOrderRepo.findAllById(history.getCompletedHistoryOrderIds())
+                .doOnNext(order -> history.addCompletedHistoryOrder(order))
+                .map(order -> history)
+                .last();
+            }
+        );
+        StepVerifier.create(f).expectNext(this.history).verifyComplete();
     }
 }

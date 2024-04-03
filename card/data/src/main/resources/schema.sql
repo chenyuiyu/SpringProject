@@ -75,7 +75,7 @@ create table if not exists MyUser (
 
 create table if not exists OrderHistory (
     id identity,
-    user_Id bigint not null,
+    username varchar(50) not null,
     uncompleted_History_Order_Ids bigint array,
     completed_History_Order_Ids bigint array
 );

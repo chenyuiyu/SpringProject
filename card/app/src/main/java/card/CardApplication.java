@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
 import card.data.dataLoader;
+//import card.security.loadUser;
 
 @SpringBootApplication
 public class CardApplication {
@@ -19,7 +20,13 @@ public class CardApplication {
     @Bean
     @Profile("!prod")
     CommandLineRunner loadData(dataLoader dataloader) {
-        return dataloader::loadData; 
+        return new CommandLineRunner() {
+            @Override
+            public void run(String... args) throws Exception{
+                dataloader.loadData(args);
+                //loaduser.initUsers();
+            }
+        };
     }
 
 }

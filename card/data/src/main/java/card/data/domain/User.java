@@ -18,12 +18,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.NonNull;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@EqualsAndHashCode(exclude = "id")
 @Table("MyUser")
 public class User implements UserDetails {
     
@@ -75,5 +77,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserDetails toUserDetails() {
+        return this;
     }
 }

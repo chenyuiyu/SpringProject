@@ -24,7 +24,6 @@ public class dataLoader {
     private UserRepository userRepo;
     private orderHistoryRepository orderHistoryRepo;
 
-    @Autowired
     public dataLoader(innerPrintRepository innerPrintRepo, sanguoshaCardRepository sanguoshaCardRepo,
             yugiohCardRepository yugiohCardRepo, skillRepository skillRepo, dataConfig dataconfig,
             UserRepository userRepo, orderHistoryRepository orderHistoryRepo) {
@@ -251,7 +250,7 @@ public class dataLoader {
         userRepo.save(new User("chenyuiyu", "88888888"))
         .flatMap(
             user -> {
-                return orderHistoryRepo.save(new orderHistory(user.getId()));
+                return orderHistoryRepo.save(new orderHistory(user.getUsername()));
             }
         ).subscribe();
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import card.data.cardOrderRepository;
 import card.data.domain.cardOrder;
@@ -22,6 +23,7 @@ public class cardOrderAggregateService {
     private sanguoshaCardAggregateService sanguoshaCardAggregator;
     private yugiohCardAggregateService yugiohCardAggregator;
     
+    //@Transactional
     public Mono<cardOrder> save(Mono<cardOrder> order) {
         if(order == null || Mono.empty().equals(order)) return Mono.empty();
         return order.flatMap(

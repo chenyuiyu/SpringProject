@@ -83,6 +83,7 @@
             <artifactId>api</artifactId>
             <version>${card.version}</version>
         </dependency>
+        
 	</dependencies>
 
 	<build>

@@ -3,61 +3,46 @@ package card.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
-@Configuration
-@EnableWebSecurity
 @SuppressWarnings("deprecation")
+@Configuration
+@EnableWebFluxSecurity
 public class securityConfig  {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private ReactiveUserDetailsService userDetailsService;
 
     @SuppressWarnings("removal")
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
-            .authorizeRequests()
-                .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                .requestMatchers("/login").permitAll() // 允许登录接口无需认证
-                .requestMatchers("/api/**").access("hasRole('ROLE_USER')")
-                .requestMatchers("/**").permitAll() // 允许其他请求
-            .and()
-                .formLogin()
-                    .loginPage("/login")
-            .and()
-                .httpBasic()
-                    .realmName("Card Design")
-            .and()
-                .logout()
-                    .logoutSuccessUrl("/")
-            .and()
-                .csrf().ignoringRequestMatchers("/h2-console/**", "/api/**")
-            .and()
-                .headers()
-                    .frameOptions()
-                    .sameOrigin();
+        .authorizeExchange(exchange ->exchange
+            //.pathMatchers(HttpMethod.OPTIONS).permitAll()
+            //.pathMatchers("/login").permitAll() // 允许登录接口无需认证
+            //.pathMatchers("/api/**").hasRole("USER")
+            .anyExchange().permitAll())
+            .authenticationManager(this.authenticationManager());
         return http.build();
     }
 
     @Bean
     PasswordEncoder encoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
     
-    
+     
     @Bean
-    AuthenticationManager authenticationManagerBean() throws Exception {
-        AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(null);
-        builder.userDetailsService(userDetailsService).passwordEncoder(encoder());
-        return builder.build();
+    ReactiveAuthenticationManager authenticationManager() {
+        UserDetailsRepositoryReactiveAuthenticationManager authenticationManager = new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
+        authenticationManager.setPasswordEncoder(this.encoder());
+        return authenticationManager;
     }
 }
