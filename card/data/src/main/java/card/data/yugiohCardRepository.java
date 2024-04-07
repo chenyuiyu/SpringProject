@@ -3,9 +3,9 @@ package card.data;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 
-import card.data.domain.yugiohCard;
+import card.domain.yugiohCard;
 
 @Repository
-public interface yugiohCardRepository extends ReactiveCrudRepository<yugiohCard, Long>{
+public interface yugiohCardRepository extends ReactiveCrudRepository<yugiohCard, String>{
     
 }

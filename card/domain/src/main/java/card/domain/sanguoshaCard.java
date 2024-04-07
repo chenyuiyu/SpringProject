@@ -1,4 +1,4 @@
-package card.data.domain;
+package card.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -20,11 +20,11 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @EqualsAndHashCode(exclude = "id")
-@Table("SanGuoShaCard")
+@Document
 public class sanguoshaCard {
 
     @Id
-    private Long id; //主键
+    private String id; //主键
 
     private Double frameH = 88.0;//边框高度
     private Double frameW = 63.0;//边框宽度
@@ -39,29 +39,22 @@ public class sanguoshaCard {
 
     private String name;//武将名
 
-    @Transient
-    private innerPrint print;//武将原画
-
-    private Long printId;//原画Id
+    //插画相关信息
+    private Double X = 0.0;//X轴方向位移
+    private Double Y = 0.0;//Y轴方向位移
+    private Double scale = 100.0;//缩放
+    private printForShow print;//武将原画
     
     //可选项
     private String printer;//画师
     private String copyright;//版权
     private String number;//编号
 
-    @Transient
     private List<skill> skills = new ArrayList<>();//武将技能
-
-    private Set<Long> skillIds = new HashSet<>();//武将技能Ids
 
     public enum countryType {
         WEI, SHU, WU, QUN, SHEN
     }//魏蜀吴群神晋
-
-    public void setPrint(innerPrint p) {
-        this.print = p;
-        if(p != null && p.getId() != null) this.setPrintId(p.getId());
-    }
 
     public void setMaxBlood(int maxBlood) {
         this.maxBlood = maxBlood;
@@ -74,14 +67,12 @@ public class sanguoshaCard {
     }
 
     public void addSkill(skill s) {
-        skills.add(s);
-        if(s != null && s.getId() != null) skillIds.add(s.getId());
+        if(s != null) skills.add(s);
     }
 
     public void addSkills(Iterable<skill> skills) {
         for(skill s : skills) {
-            this.skills.add(s);
-            if(s != null && s.getId() != null) skillIds.add(s.getId());
+            this.addSkill(s);
         }
     }
 }

@@ -1,63 +1,56 @@
 package card.data;
 
 import java.util.Arrays;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 import card.data.config.dataConfig;
-import card.data.domain.User;
-import card.data.domain.innerPrint;
-import card.data.domain.orderHistory;
-import card.data.domain.sanguoshaCard;
-import card.data.domain.skill;
-import card.data.domain.yugiohCard;
+import card.domain.printForShow;
+import card.domain.sanguoshaCard;
+import card.domain.skill;
+import card.domain.yugiohCard;
 
 @Service
 public class dataLoader {
 
-    private innerPrintRepository innerPrintRepo;
+    private printForShowRepository printForShowRepo;
     private sanguoshaCardRepository sanguoshaCardRepo;
     private yugiohCardRepository yugiohCardRepo;
     private skillRepository skillRepo;
     private dataConfig dataconfig;
 
-    private UserRepository userRepo;
-    private orderHistoryRepository orderHistoryRepo;
-
-    public dataLoader(innerPrintRepository innerPrintRepo, sanguoshaCardRepository sanguoshaCardRepo,
-            yugiohCardRepository yugiohCardRepo, skillRepository skillRepo, dataConfig dataconfig,
-            UserRepository userRepo, orderHistoryRepository orderHistoryRepo) {
-        this.innerPrintRepo = innerPrintRepo;
+    public dataLoader(printForShowRepository printForShowRepo, sanguoshaCardRepository sanguoshaCardRepo,
+            yugiohCardRepository yugiohCardRepo, skillRepository skillRepo, dataConfig dataconfig) {
+        this.printForShowRepo = printForShowRepo;
         this.sanguoshaCardRepo = sanguoshaCardRepo;
         this.yugiohCardRepo = yugiohCardRepo;
         this.skillRepo = skillRepo;
         this.dataconfig = dataconfig;
-        this.userRepo = userRepo;
-        this.orderHistoryRepo = orderHistoryRepo;
+        
     }
 
     public void loadData(String... args) throws Exception {
         loadSanGuoSha();
         loadYuGiOh();
-        loadUser();
     }
 
     private void loadSanGuoSha() {
-        innerPrint sanguoxiu = new innerPrint(dataconfig.sanguoxiuUrl);
-        innerPrint qun = new innerPrint(dataconfig.qunUrl);
-        innerPrint shen = new innerPrint(dataconfig.shenUrl);
-        innerPrint shu = new innerPrint(dataconfig.shuUrl);
-        innerPrint wei = new innerPrint(dataconfig.weiUrl);
-        innerPrint wu = new innerPrint(dataconfig.wuUrl);
+        printForShow sanguoxiu = new printForShow(dataconfig.sanguoxiuUrl);
+        printForShow qun = new printForShow(dataconfig.qunUrl);
+        printForShow shen = new printForShow(dataconfig.shenUrl);
+        printForShow shu = new printForShow(dataconfig.shuUrl);
+        printForShow wei = new printForShow(dataconfig.weiUrl);
+        printForShow wu = new printForShow(dataconfig.wuUrl);
 
-        innerPrintRepo.deleteAll().subscribe();
+        /*如果运行的是本地数据库，记得每次加载数据前清除数据 */
+        printForShowRepo.deleteAll().subscribe();
         skillRepo.deleteAll().subscribe();
         sanguoshaCardRepo.deleteAll().subscribe();
 
         // 未知卡
         sanguoshaCard unknown = new sanguoshaCard(sanguoshaCard.countryType.valueOf("SHEN"));
 
-        innerPrintRepo.save(sanguoxiu).subscribe(res -> {
+        printForShowRepo.save(sanguoxiu).subscribe(res -> {
             unknown.setPrint(res);
         });
 
@@ -66,7 +59,7 @@ public class dataLoader {
 
         sanguoshaCard weiWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("WEI"));
 
-        innerPrintRepo.save(wei).subscribe(res -> {
+        printForShowRepo.save(wei).subscribe(res -> {
             weiWuJiang.setPrint(res);
         });
 
@@ -86,7 +79,7 @@ public class dataLoader {
 
         // 鲍三娘
         sanguoshaCard shuWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("SHU"));
-        innerPrintRepo.save(shu).subscribe(res -> {
+        printForShowRepo.save(shu).subscribe(res -> {
             shuWuJiang.setPrint(res);
         });
 
@@ -106,7 +99,7 @@ public class dataLoader {
 
         // 孙鲁班
         sanguoshaCard wuWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("WU"));
-        innerPrintRepo.save(wu).subscribe(res -> {
+        printForShowRepo.save(wu).subscribe(res -> {
             wuWuJiang.setPrint(res);
         });
 
@@ -123,7 +116,7 @@ public class dataLoader {
 
         // 谋貂蝉
         sanguoshaCard qunWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("QUN"));
-        innerPrintRepo.save(qun).subscribe(res -> {
+        printForShowRepo.save(qun).subscribe(res -> {
             qunWuJiang.setPrint(res);
         });
 
@@ -139,7 +132,7 @@ public class dataLoader {
 
         // 神荀彧
         sanguoshaCard shenWuJiang = new sanguoshaCard(sanguoshaCard.countryType.valueOf("SHEN"));
-        innerPrintRepo.save(shen).subscribe(res -> {
+        printForShowRepo.save(shen).subscribe(res -> {
             shenWuJiang.setPrint(res);
         });
 
@@ -161,17 +154,17 @@ public class dataLoader {
     }
 
     private void loadYuGiOh() {
-        // innerPrint monster = new innerPrint(dataconfig.monsterUrl);
-        // innerPrint magic = new innerPrint(dataconfig.magicUrl);
-        // innerPrint trap = new innerPrint(dataconfig.trapUrl);
-        // innerPrint soulpendulum = new innerPrint(dataconfig.soulpendulumUrl);
+        // printForShow monster = new printForShow(dataconfig.monsterUrl);
+        // printForShow magic = new printForShow(dataconfig.magicUrl);
+        // printForShow trap = new printForShow(dataconfig.trapUrl);
+        // printForShow soulpendulum = new printForShow(dataconfig.soulpendulumUrl);
 
         // yugiohCard blueeyewhitedragon = new yugiohCard();
         // blueeyewhitedragon.setCardCatalog(yugiohCard.CardCatalog.valueOf("MONSTER"));
         // blueeyewhitedragon.setElementType(yugiohCard.ElementType.valueOf("LIGHT"));
         // blueeyewhitedragon.setCardtype(yugiohCard.CardType.valueOf("ORIGIN"));
 
-        // innerPrintRepo.save(monster).subscribe(res -> {
+        // printForShowRepo.save(monster).subscribe(res -> {
         // blueeyewhitedragon.setPrint(res);
         // });
 
@@ -193,7 +186,7 @@ public class dataLoader {
         // fusion.setCardCatalog(yugiohCard.CardCatalog.valueOf("MAGIC"));
         // fusion.setElementType(yugiohCard.ElementType.valueOf("NONE"));
         // fusion.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
-        // innerPrintRepo.save(magic).subscribe(res -> {
+        // printForShowRepo.save(magic).subscribe(res -> {
         // fusion.setPrint(res);
         // });
 
@@ -210,7 +203,7 @@ public class dataLoader {
         // Holyreflector.setCardCatalog(yugiohCard.CardCatalog.valueOf("TRAP"));
         // Holyreflector.setElementType(yugiohCard.ElementType.valueOf("NONE"));
         // Holyreflector.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
-        // innerPrintRepo.save(trap).subscribe(res -> {
+        // printForShowRepo.save(trap).subscribe(res -> {
         // Holyreflector.setPrint(res);
         // });
 
@@ -227,7 +220,7 @@ public class dataLoader {
         // Heterochromaticeye.setCardCatalog(yugiohCard.CardCatalog.valueOf("SOULPENDULUM"));
         // Heterochromaticeye.setElementType(yugiohCard.ElementType.valueOf("DARK"));
         // Heterochromaticeye.setCardtype(yugiohCard.CardType.valueOf("EFFECT"));
-        // innerPrintRepo.save(soulpendulum).subscribe(res -> {
+        // printForShowRepo.save(soulpendulum).subscribe(res -> {
         // Heterochromaticeye.setPrint(res);
         // });
 
@@ -244,14 +237,5 @@ public class dataLoader {
         // yugiohCardRepo.saveAll(Arrays.asList(blueeyewhitedragon, fusion,
         // Holyreflector, Heterochromaticeye))
         // .subscribe();
-    }
-
-    private void loadUser() {
-        userRepo.save(new User("chenyuiyu", "88888888"))
-        .flatMap(
-            user -> {
-                return orderHistoryRepo.save(new orderHistory(user.getUsername()));
-            }
-        ).subscribe();
     }
 }

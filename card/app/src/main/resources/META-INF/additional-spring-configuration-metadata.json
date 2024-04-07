@@ -2,51 +2,51 @@
     {
       "name": "data.resources.wei-url",
       "type": "java.lang.String",
-      "description": "default url for innerPrint of wei"
+      "description": "default url for printForShow of wei"
     },
     {
       "name": "data.resources.shu-url",
       "type": "java.lang.String",
-      "description": "default url for innerPrint of shu"
+      "description": "default url for printForShow of shu"
     },
     {
       "name": "data.resources.wu-url",
       "type": "java.lang.String",
-      "description": "default url for innerPrint of wu"
+      "description": "default url for printForShow of wu"
     },
     {
       "name": "data.resources.qun-url",
       "type": "java.lang.String",
-      "description": "default url for innerPrint of qun"
+      "description": "default url for printForShow of qun"
     },
     {
       "name": "data.resources.sanguoxiu-url",
       "type": "java.lang.String",
-      "description": "default url for innerPrint of sanguoxiu"
+      "description": "default url for printForShow of sanguoxiu"
     },
     {
       "name": "data.resources.shenUrl",
       "type": "java.lang.String",
-      "description": "default url for innerPrint of shen"
+      "description": "default url for printForShow of shen"
     },
     {
         "name": "data.resources.monsterUrl",
         "type": "java.lang.String",
-        "description": "default url for innerPrint of monster"
+        "description": "default url for printForShow of monster"
       },
       {
         "name": "data.resources.magicUrl",
         "type": "java.lang.String",
-        "description": "default url for innerPrint of magic"
+        "description": "default url for printForShow of magic"
       },
       {
         "name": "data.resources.trapUrl",
         "type": "java.lang.String",
-        "description": "default url for innerPrint of trap"
+        "description": "default url for printForShow of trap"
       },
       {
         "name": "data.resources.soulpendulumUrl",
         "type": "java.lang.String",
-        "description": "default url for innerPrint of soulpendulum"
+        "description": "default url for printForShow of soulpendulum"
       }
   ]}

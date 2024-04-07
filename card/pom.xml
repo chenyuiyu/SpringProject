@@ -17,14 +17,16 @@
 	<properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <java.version>21</java.version>
         <card.version>${project.version}</card.version>
 	</properties>
 
 	<modules>
         <module>app</module>
+        <module>security</module>
         <module>data</module>
 		<module>api</module>
-		<module>security</module>
+		<module>domain</module>
     </modules>
 
 </project>

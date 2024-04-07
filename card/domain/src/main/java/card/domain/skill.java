@@ -1,8 +1,7 @@
-package card.data.domain;
+package card.domain;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(exclude = "id")
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table("Skill")
+@Document
 public class skill {
 
     @Id
-    private Long id;
+    private String id;
     
     private @NonNull String header;
     private @NonNull String description;

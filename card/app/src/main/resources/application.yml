@@ -1,10 +1,18 @@
 spring:
+  config:
+    activate:
+      on-profile: default
+
+---
+spring:
+    config:
+        activate:
+            on-profile: default
     application:
         name: card
     data:
         rest:
             base-path: /api
-
 data:
     resources:
         sanguoxiuUrl: "sanguosha/sanguoxiu/zzhead.jpg"
@@ -13,4 +21,29 @@ data:
         wuUrl: "sanguosha/wujaing/【吴】孙鲁班.jpg"
         qunUrl: "sanguosha/wujiang/【群】谋貂蝉.jpg"
         shenUrl: "sanguosha.wujiang/【神】荀彧.jpg"
+debug: true
 
+---
+spring:
+    config:
+        activate:
+            on-profile: prod
+    application:
+        name: card
+    data:
+        rest:
+            base-path: /api
+        mongodb:
+            host: localhost
+            port: 27017
+            username: chenyuiyu
+            password: 88888888
+            database: carddesigndb
+data:
+    resources:
+        sanguoxiuUrl: "sanguosha/sanguoxiu/zzhead.jpg"
+        weiUrl: "sanguosha/wujiang/【魏】戏志才.jpg"
+        shuUrl: "sanguosha/wujaing/【蜀】鲍三娘.jpg"
+        wuUrl: "sanguosha/wujaing/【吴】孙鲁班.jpg"
+        qunUrl: "sanguosha/wujiang/【群】谋貂蝉.jpg"
+        shenUrl: "sanguosha.wujiang/【神】荀彧.jpg"

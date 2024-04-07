@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout.html}">
+  <head>
+    <title>Taco Cloud</title>
+  </head>
+  
+  <body>
+    <section layout:fragment="main" class="content">
+      <h1>Register</h1>
+      
+      <form method="POST" th:action="@{/register}" id="registerForm">
+      
+          <label for="username">用户名: </label>
+          <input type="text" name="username"/><br/>
+  
+          <label for="password">密码: </label>
+          <input type="password" name="password"/><br/>
+  
+          <label for="confirm">确认密码: </label>
+          <input type="password" name="confirm"/><br/>
+  
+          <label for="fullname">全名: </label>
+          <input type="text" name="fullname"/><br/>
+      
+          <label for="province">省份: </label>
+          <input type="text" name="province"/><br/>
+      
+          <label for="city">城市: </label>
+          <input type="text" name="city"/><br/>
+      
+          <label for="state">区: </label>
+          <input type="text" name="state"/><br/>
+      
+          <label for="detailedLocation">详细地址: </label>
+          <input type="text" name="detailedLocation"/><br/>
+      
+          <label for="phoneNumber">手机号码: </label>
+          <input type="text" name="phoneNumber"/><br/>
+      
+          <input type="submit" value="Register"/>
+      </form>
+    </section>
+  </body>
+</html>

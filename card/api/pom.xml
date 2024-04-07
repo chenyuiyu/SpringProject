@@ -21,17 +21,36 @@
     </properties>
 
     <dependencies>
+        
+        <!--Card dependencies -->
+        <dependency>
+            <groupId>card</groupId>
+            <artifactId>security</artifactId>
+            <version>${card.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>card</groupId>
             <artifactId>data</artifactId>
             <version>${card.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>card</groupId>
+            <artifactId>domain</artifactId>
+            <version>${card.version}</version>
+        </dependency>
         
+        <!-- Necessary Boot starters -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
-        
+		<!--dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency-->
+
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -49,19 +68,13 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-        <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency>
-
+        
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        
 
     </dependencies>
 

@@ -1,4 +1,4 @@
-create table if not exists InnerPrint (
+create table if not exists printForShow (
     id identity,
     X double not null,
     Y double NOT NULL,
@@ -62,7 +62,7 @@ create table if not exists CardOrder (
 create table if not exists MyUser (
     id identity,
     username varchar(50) not null,
-    password varchar(50) not null,
+    password varchar(500) not null,
     fullname varchar(50),
     province varchar(50),
     city varchar(50),
@@ -70,7 +70,7 @@ create table if not exists MyUser (
     detailed_Location varchar(500),
     phone_Number varchar(20),
     email varchar(50),
-    roles varchar(20) array
+    roles varchar(50) array
 );
 
 create table if not exists OrderHistory (

@@ -1,12 +1,11 @@
-package card.data.domain;
+package card.domain;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,11 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "id")
-@Table("YuGiOhCard")
+@Document
 public class yugiohCard {
     
     @Id
-    private Long id;//主键
+    private String id;//主键
 
     private String name;//名字
 
@@ -30,15 +29,14 @@ public class yugiohCard {
 
     private CardType cardtype;//卡牌类型
     
-    @Transient
     private skill skill;//技能
 
-    private Long skillId;//技能Id
-
-    @Transient
-    private innerPrint print;//图片
-
-    private Long printId;//图片Id
+    //插画相关信息
+    private Double X = 0.0;//X轴方向位移
+    private Double Y = 0.0;//Y轴方向位移
+    
+    private Double scale = 100.0;//缩放
+    private printForShow print;//插画
 
     //可选项
     private String designer;//设计师
@@ -68,13 +66,4 @@ public class yugiohCard {
         ORIGIN, EFECT, RITE, FUSION, HOMOLOGY, EXCESS, CONNECT, RAMIFICATION
     }//通常、效果、仪式、融合、同调、超量、连接、衍生物
 
-    public void setSkill(skill s) {
-        this.skill = s;
-        if(s != null && s.getId() != null) this.setSkillId(s.getId());
-    }
-
-    public void setPrint(innerPrint p) {
-        this.print = p;
-        if(p != null && p.getId() != null) this.setPrintId(p.getId());
-    }
 }

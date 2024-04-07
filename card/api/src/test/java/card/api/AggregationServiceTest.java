@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -25,20 +26,20 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import card.data.cardOrderRepository;
-import card.data.innerPrintRepository;
+import card.data.printForShowRepository;
 import card.data.sanguoshaCardRepository;
 import card.data.skillRepository;
 import card.data.yugiohCardRepository;
-import card.data.domain.cardOrder;
-import card.data.domain.innerPrint;
-import card.data.domain.sanguoshaCard;
-import card.data.domain.skill;
-import card.data.domain.yugiohCard;
+import card.domain.cardOrder;
+import card.domain.printForShow;
+import card.domain.sanguoshaCard;
+import card.domain.skill;
+import card.domain.yugiohCard;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-@DataR2dbcTest
+@DataMongoTest
 public class AggregationServiceTest {
 
     @MockBean
@@ -51,7 +52,7 @@ public class AggregationServiceTest {
     private yugiohCardRepository yugiohCardRepo;
 
     @MockBean
-    private innerPrintRepository innerPrintRepo;
+    private printForShowRepository printForShowRepo;
 
     @MockBean
     private skillRepository skillRepo;
@@ -66,47 +67,48 @@ public class AggregationServiceTest {
         TestConfig.setup();
     }
 
-    @SuppressWarnings("null")
     @BeforeEach
     public void setupEach() {
 
-        this.sanguoshaCardAggregator = new sanguoshaCardAggregateService(innerPrintRepo, skillRepo, sanguoshaCardRepo);
-        this.yugiohCardAggregator = new yugiohCardAggregateService(yugiohCardRepo, skillRepo, innerPrintRepo);
+        this.sanguoshaCardAggregator = new sanguoshaCardAggregateService(printForShowRepo, skillRepo, sanguoshaCardRepo);
+        this.yugiohCardAggregator = new yugiohCardAggregateService(yugiohCardRepo, skillRepo, printForShowRepo);
         this.cardOrderAggregator = new cardOrderAggregateService(cardOrderRepo, sanguoshaCardAggregator, yugiohCardAggregator);
 
-        Set<Long> ids = new HashSet<>();
-        ids.add(1l); ids.add(2l);
+        Set<String> ids = new HashSet<>();
+        ids.add("1"); ids.add("2");
 
         //初始化插画仓库行为
-        int n1 = TestConfig.getInInnerPrints().size();
+        int n1 = TestConfig.getPrintForShows().size();
         for(int i = 0; i < n1; i++) {
-            when(innerPrintRepo.save(TestConfig.getInInnerPrints().get(i))).thenReturn(Mono.just(TestConfig.getOutInnerPrints().get(i)));
-            when(innerPrintRepo.findById((long)(i + 1))).thenReturn(Mono.just(TestConfig.getOutInnerPrints().get(i)));
+            when(printForShowRepo.save(TestConfig.getPrintForShows().get(i))).thenReturn(Mono.just(TestConfig.getPrintForShows().get(i)));
+            when(printForShowRepo.findById(String.valueOf(i + 1))).thenReturn(Mono.just(TestConfig.getPrintForShows().get(i)));
         }
-        when(innerPrintRepo.findAll()).thenReturn(Flux.fromIterable(TestConfig.getOutInnerPrints()));
-        when(innerPrintRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getOutInnerPrints()));
+        when(printForShowRepo.findAll()).thenReturn(Flux.fromIterable(TestConfig.getPrintForShows()));
+        when(printForShowRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getPrintForShows()));
 
         //初始化技能仓库行为
-        int n2 = TestConfig.getInSkills().size();
+        int n2 = TestConfig.getSkills().size();
         for(int i = 0; i < n2; i++) {
-            when(skillRepo.save(TestConfig.getInSkills().get(i))).thenReturn(Mono.just(TestConfig.getOutSkills().get(i)));
-            when(skillRepo.findById((long)(i + 1))).thenReturn(Mono.just(TestConfig.getOutSkills().get(i)));
+            when(skillRepo.save(TestConfig.getSkills().get(i))).thenReturn(Mono.just(TestConfig.getSkills().get(i)));
+            when(skillRepo.findById(String.valueOf(i + 1))).thenReturn(Mono.just(TestConfig.getSkills().get(i)));
         }
-        when(skillRepo.saveAll(TestConfig.getInSkills())).thenReturn(Flux.fromIterable(TestConfig.getOutSkills()));
-        when(skillRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getOutSkills()));
+        when(skillRepo.saveAll(TestConfig.getSkills())).thenReturn(Flux.fromIterable(TestConfig.getSkills()));
+        when(skillRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getSkills()));
+        when(skillRepo.findAll()).thenReturn(Flux.fromIterable(TestConfig.getSkills()));
 
         //初始化三国杀卡牌仓库行为
-        int n3 = TestConfig.getInSanguoshaCards().size();
+        int n3 = TestConfig.getSanguoshaCards().size();
         for(int i = 0; i < n3; i++) {
-            when(sanguoshaCardRepo.save(TestConfig.getInSanguoshaCards().get(i))).thenReturn(Mono.just(TestConfig.getOutSanguoshaCards().get(i)));
-            when(sanguoshaCardRepo.findById((long)(i + 1))).thenReturn(Mono.just(TestConfig.getOutSanguoshaCards().get(i)));
+            when(sanguoshaCardRepo.save(TestConfig.getSanguoshaCards().get(i))).thenReturn(Mono.just(TestConfig.getSanguoshaCards().get(i)));
+            when(sanguoshaCardRepo.findById(String.valueOf(i + 1))).thenReturn(Mono.just(TestConfig.getSanguoshaCards().get(i)));
         }
-        when(sanguoshaCardRepo.saveAll(Flux.fromIterable(TestConfig.getInSanguoshaCards()))).thenReturn(Flux.fromIterable(TestConfig.getOutSanguoshaCards()));
-        when(sanguoshaCardRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getOutSanguoshaCards()));
+        when(sanguoshaCardRepo.saveAll(Flux.fromIterable(TestConfig.getSanguoshaCards()))).thenReturn(Flux.fromIterable(TestConfig.getSanguoshaCards()));
+        when(sanguoshaCardRepo.findAllById(ids)).thenReturn(Flux.fromIterable(TestConfig.getSanguoshaCards()));
+        when(sanguoshaCardRepo.findAll()).thenReturn(Flux.fromIterable(TestConfig.getSanguoshaCards()));
         
         //初始化订单仓库行为
-        when(cardOrderRepo.save(TestConfig.getInorder())).thenReturn(Mono.just(TestConfig.getOutorder()));
-        when(cardOrderRepo.findById(1l)).thenReturn(Mono.just(TestConfig.getOutorder()));
+        when(cardOrderRepo.save(TestConfig.getOrder())).thenReturn(Mono.just(TestConfig.getOrder()));
+        when(cardOrderRepo.findById("1")).thenReturn(Mono.just(TestConfig.getOrder()));
 
         //初始化游戏王卡牌仓库行为
         //TODO:
@@ -115,20 +117,34 @@ public class AggregationServiceTest {
     @Test
     public void testSanguoshaCardAggregator() {
 
-        List<sanguoshaCard> cards = TestConfig.getInSanguoshaCards();
-        List<sanguoshaCard> outCards = TestConfig.getOutSanguoshaCards();
-        Set<Long> records = new HashSet<>();
+        List<sanguoshaCard> cards = TestConfig.getSanguoshaCards();
+        List<printForShow> prints = TestConfig.getPrintForShows();
+        List<skill> skills = TestConfig.getSkills();
+
+        Set<String> records = new HashSet<>();
         assertEquals(cards.size(), 2);
 
         Flux<sanguoshaCard> c1 = sanguoshaCardAggregator.saveAll(Flux.fromIterable(cards))
                 .doOnNext(card -> records.add(card.getId()));
         StepVerifier.create(c1).expectNextCount(2).verifyComplete();
 
+        //验证存三国杀卡牌是否将插画和技能存入数据库
+        StepVerifier.create(printForShowRepo.findAll())
+        .expectNextMatches(p -> prints.contains(p))
+        .expectNextMatches(p -> prints.contains(p))
+        .verifyComplete();
+
+        StepVerifier.create(skillRepo.findAll())
+        .expectNextMatches(s -> skills.contains(s))
+        .expectNextMatches(s -> skills.contains(s))
+        .verifyComplete();
+
+        //验证三国杀卡牌数据库
         Flux<sanguoshaCard> c2 = Flux.fromIterable(records)
                 .flatMap(id -> sanguoshaCardAggregator.findById(id));
         StepVerifier.create(c2)
-        .expectNextMatches(card -> outCards.contains(card))
-        .expectNextMatches(card -> outCards.contains(card))
+        .expectNextMatches(card -> cards.contains(card))
+        .expectNextMatches(card -> cards.contains(card))
         .verifyComplete();
     }
 
@@ -148,14 +164,33 @@ public class AggregationServiceTest {
 
     @Test
     public void testCardOrderAggregator() {
-        cardOrder order = TestConfig.getInorder();
-        cardOrder outOrder = TestConfig.getOutorder();
-        Mono<cardOrder> m1 = cardOrderAggregator.save(Mono.just(order)).doOnNext(x -> order.setId(x.getId()));
+        cardOrder order = TestConfig.getOrder();
+        List<sanguoshaCard> sCards = TestConfig.getSanguoshaCards();
+        List<yugiohCard> yCards = TestConfig.getYugiohCards();
+        List<printForShow> prints = TestConfig.getPrintForShows();
+        List<skill> skills = TestConfig.getSkills();
+
+        Mono<cardOrder> m1 = cardOrderAggregator.save(Mono.just(order));
         StepVerifier.create(m1).expectNextCount(1).verifyComplete();
 
+        StepVerifier.create(sanguoshaCardRepo.findAll())
+        .expectNextMatches(card -> sCards.contains(card))
+        .expectNextMatches(card -> sCards.contains(card))
+        .verifyComplete();
+
+        StepVerifier.create(printForShowRepo.findAll())
+        .expectNextMatches(p -> prints.contains(p))
+        .expectNextMatches(p -> prints.contains(p))
+        .verifyComplete();
+
+        StepVerifier.create(skillRepo.findAll())
+        .expectNextMatches(s -> skills.contains(s))
+        .expectNextMatches(s -> skills.contains(s))
+        .verifyComplete();
+
         StepVerifier.create(cardOrderAggregator.findById(order.getId()))
-                .expectNext(outOrder)
-                .verifyComplete();
+        .expectNext(order)
+        .verifyComplete();
     }
 
 }

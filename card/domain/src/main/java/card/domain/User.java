@@ -1,4 +1,4 @@
-package card.data.domain;
+package card.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.Set;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,15 +25,12 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@EqualsAndHashCode(exclude = "id")
-@Table("MyUser")
+@Document
 public class User implements UserDetails {
     
     private static final long serialVersionUID = 1L;
 
     @Id
-    private Long id;
-
     private @NonNull String username;//用户凭证
     private @NonNull String password;//密码
 

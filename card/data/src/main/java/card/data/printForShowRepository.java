@@ -3,9 +3,9 @@ package card.data;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 
-import card.data.domain.innerPrint;
+import card.domain.printForShow;
 
 @Repository
-public interface innerPrintRepository extends ReactiveCrudRepository<innerPrint, Long>{
+public interface printForShowRepository extends ReactiveCrudRepository<printForShow, String>{
     
 }

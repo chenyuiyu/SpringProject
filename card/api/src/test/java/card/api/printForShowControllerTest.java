@@ -14,20 +14,21 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import card.data.domain.User;
-import card.data.domain.innerPrint;
+
+import card.domain.User;
+import card.domain.printForShow;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class InnerPrintControllerTest {
+public class printForShowControllerTest {
     
     @Autowired
     private WebTestClient client;
 
     @Test
-    public void shouldReturnAllInnerPrints() throws IOException {
+    public void shouldReturnAllprintForShows() throws IOException {
 
         //注意：json路径中的属性为小写
-        client.get().uri("/innerPrints")
+        client.get().uri("/printForShows")
         .exchange()
         .expectStatus().isOk()
         .expectBody()
@@ -45,17 +46,17 @@ public class InnerPrintControllerTest {
     }
 
     @Test
-    public void shouldAddInnerPrint() {
+    public void shouldAddprintForShow() {
 
-        innerPrint unSaved = new innerPrint("?");
+        printForShow unSaved = new printForShow("?");
 
         client.post()
-        .uri("/innerPrints")
+        .uri("/printForShows")
         .contentType(MediaType.APPLICATION_JSON)
-        .body(unSaved, innerPrint.class)
+        .body(unSaved, printForShow.class)
         .exchange()
         .expectStatus().isCreated()
-        .expectBody(innerPrint.class)
+        .expectBody(printForShow.class)
         .isEqualTo(unSaved);
     }
 }

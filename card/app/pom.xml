@@ -22,12 +22,38 @@
     </properties>
 
     <dependencies>
+
+        <!--Card dependencies -->
+        <dependency>
+            <groupId>card</groupId>
+            <artifactId>api</artifactId>
+            <version>${card.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>card</groupId>
+            <artifactId>data</artifactId>
+            <version>${card.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>card</groupId>
+            <artifactId>domain</artifactId>
+            <version>${card.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>card</groupId>
+            <artifactId>security</artifactId>
+            <version>${card.version}</version>
+        </dependency>
+
 		<!-- Run against embedded H2 database by default -->
-		<dependency>
+		<!--dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency-->
 
 		<!-- Actuator and DevTools...just because -->
 		<dependency>
@@ -35,6 +61,7 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -46,16 +73,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>htmlunit-driver</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>io.projectreactor</groupId>
@@ -63,27 +80,12 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>io.github.bonigarcia</groupId>
-			<artifactId>webdrivermanager</artifactId>
-			<version>4.4.3</version>
-			<scope>test</scope>
-		</dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>card</groupId>
-            <artifactId>data</artifactId>
-            <version>${card.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>card</groupId>
-            <artifactId>api</artifactId>
-            <version>${card.version}</version>
-        </dependency>
-        
+            <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+        </dependency -->
+
+
 	</dependencies>
 
 	<build>

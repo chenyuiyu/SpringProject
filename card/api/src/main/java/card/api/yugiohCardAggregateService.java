@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import card.data.innerPrintRepository;
+import card.data.printForShowRepository;
 import card.data.skillRepository;
 import card.data.yugiohCardRepository;
-import card.data.domain.yugiohCard;
-import card.data.domain.skill;
+import card.domain.skill;
+import card.domain.yugiohCard;
 import lombok.AllArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,7 +24,7 @@ public class yugiohCardAggregateService {
     private skillRepository skillRepo;
 
     @Autowired
-    private innerPrintRepository innerPrintRepo;
+    private printForShowRepository printForShowRepo;
 
     // @SuppressWarnings("null")
     //@Transactional
@@ -33,7 +33,7 @@ public class yugiohCardAggregateService {
         // c -> {
         // if (c.getPrint() == null)
         // return Mono.just(c);
-        // return innerPrintRepo.save(c.getPrint()).map(
+        // return printForShowRepo.save(c.getPrint()).map(
         // p -> {
         // c.setPrint(p);
         // return c;
@@ -61,7 +61,7 @@ public class yugiohCardAggregateService {
         // card -> {
         // if (card.getPrint() == null)
         // return Mono.just(card);
-        // return innerPrintRepo.findById(card.getPrintId()).map(
+        // return printForShowRepo.findById(card.getPrintId()).map(
         // p -> {
         // card.setPrint(p);
         // return card;

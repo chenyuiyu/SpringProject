@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import card.data.innerPrintRepository;
+import card.data.printForShowRepository;
 import card.data.sanguoshaCardRepository;
 import card.data.skillRepository;
-import card.data.domain.sanguoshaCard;
-import card.data.domain.skill;
+import card.domain.sanguoshaCard;
+import card.domain.skill;
 import lombok.AllArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class sanguoshaCardAggregateService {
     @Autowired
-    private innerPrintRepository innerPrintRepo;
+    private printForShowRepository printForShowRepo;
 
     @Autowired
     private skillRepository skillRepo;
@@ -28,13 +28,12 @@ public class sanguoshaCardAggregateService {
     @Autowired
     private sanguoshaCardRepository sanguoshaCardRepo;
 
-    @SuppressWarnings("null")
     //@Transactional
     public Mono<sanguoshaCard> save(Mono<sanguoshaCard> card) {
         return card.flatMap(
             c -> {
                 if(c.getPrint() == null) return Mono.just(c);
-                return innerPrintRepo.save(c.getPrint()).map(
+                return printForShowRepo.save(c.getPrint()).map(
                     p -> {
                         c.setPrint(p);
                         return c;
@@ -56,30 +55,9 @@ public class sanguoshaCardAggregateService {
         ).flatMap(sanguoshaCardRepo::save);
     }
 
-    @SuppressWarnings("null")
-    public Mono<sanguoshaCard> findById(Long id) {
+    public Mono<sanguoshaCard> findById(String id) {
         if(id == null) return Mono.empty();
-        return sanguoshaCardRepo.findById(id).flatMap(
-            card -> {
-                if(card.getPrintId() == null) return Mono.just(card);
-                return innerPrintRepo.findById(card.getPrintId()).map(
-                    p -> {
-                        card.setPrint(p);
-                        return card;
-                    }
-                );
-            }
-        ).flatMap(
-            card -> {
-                if(card.getSkillIds().isEmpty()) return Mono.just(card);
-                return skillRepo.findAllById(card.getSkillIds()).map(
-                    s -> {
-                        card.addSkill(s);
-                        return card;
-                    }
-                ).last();
-            }
-        );
+        return sanguoshaCardRepo.findById(id);
     }
 
     public Flux<sanguoshaCard> saveAll(Flux<sanguoshaCard> cards) {

@@ -1,16 +1,18 @@
 package card;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
-import card.data.dataLoader;
-//import card.security.loadUser;
+import org.springframework.web.reactive.config.EnableWebFlux;
 
-@SpringBootApplication
+import card.data.dataLoader;
+import card.security.initUserService;
+
+@SpringBootApplication(exclude = {WebMvcAutoConfiguration.class})
+@EnableWebFlux
 public class CardApplication {
 
 	public static void main(String[] args) {
@@ -19,12 +21,13 @@ public class CardApplication {
 
     @Bean
     @Profile("!prod")
-    CommandLineRunner loadData(dataLoader dataloader) {
+    CommandLineRunner initData(dataLoader dataloader, initUserService userLoader) {
+        
         return new CommandLineRunner() {
             @Override
-            public void run(String... args) throws Exception{
+            public void run(String... args) throws Exception {
                 dataloader.loadData(args);
-                //loaduser.initUsers();
+                userLoader.loadUser();
             }
         };
     }

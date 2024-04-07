@@ -1,4 +1,4 @@
-package card.data.domain;
+package card.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -7,27 +7,24 @@ import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@Table("CardOrder")
 @RequiredArgsConstructor
 @EqualsAndHashCode(exclude = "id")
+@Document
 public class cardOrder {
     
     @Id
-    private Long id;//订单主键
+    private String id;//订单主键
 
-    @Transient
     private List<sanguoshaCard> sanguoshaCards = new ArrayList<>();//三国杀卡牌集合
-    private Set<Long> sanguoshaCardIds = new HashSet<>();//三国杀卡牌主键集合
 
-    @Transient
     private List<yugiohCard> yugiohCards = new ArrayList<>();//游戏王卡牌集合
-    private Set<Long> yugiohCardIds = new HashSet<>();//游戏王卡牌主键集合
 
     private Long prices;//订单总额
 
@@ -42,7 +39,6 @@ public class cardOrder {
     public void addSanGuoShaCard(sanguoshaCard card) {
         if(card == null) return;
         this.sanguoshaCards.add(card);
-        if(card.getId() != null) this.sanguoshaCardIds.add(card.getId());
     }
 
     public void addSanGuoShaCards(Iterable<sanguoshaCard> cards) {
@@ -55,7 +51,6 @@ public class cardOrder {
     public void addYuGiOhCard(yugiohCard card) {
         if(card == null) return;
         this.yugiohCards.add(card);
-        if(card.getId() != null) this.yugiohCardIds.add(card.getId());
     }
 
     public void addYuGiOhCards(Iterable<yugiohCard> cards) {

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import card.data.cardOrderRepository;
-import card.data.domain.cardOrder;
-import card.data.domain.sanguoshaCard;
-import card.data.domain.yugiohCard;
+import card.domain.cardOrder;
+import card.domain.sanguoshaCard;
+import card.domain.yugiohCard;
 import lombok.AllArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -49,29 +49,9 @@ public class cardOrderAggregateService {
         ).flatMap(cardOrderRepo::save);
     }
 
-    public Mono<cardOrder> findById(Long id) {
+    public Mono<cardOrder> findById(String id) {
         if(id == null) return Mono.empty();
-        return cardOrderRepo.findById(id).flatMap(
-            order -> {
-                Set<Long> cards = order.getSanguoshaCardIds();
-                if(cards.isEmpty()) return Mono.just(order);
-                return Flux.fromIterable(cards)
-                .flatMap(x -> sanguoshaCardAggregator.findById(x))
-                .doOnNext(card -> order.addSanGuoShaCard(card))
-                .map(card -> order)
-                .last();
-            }
-        ).flatMap(
-            order -> {
-                Set<Long> cards = order.getYugiohCardIds();
-                if(cards.isEmpty()) return Mono.just(order);
-                return Flux.fromIterable(cards)
-                .flatMap(x -> yugiohCardAggregator.findById(x))
-                .doOnNext(card -> order.addYuGiOhCard(card))
-                .map(card -> order)
-                .last();
-            }
-        );
+        return cardOrderRepo.findById(id);
     }
 
     public Flux<cardOrder> saveAll(Flux<cardOrder> orders) {
