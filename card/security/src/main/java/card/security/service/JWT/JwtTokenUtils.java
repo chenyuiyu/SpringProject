@@ -1,4 +1,4 @@
-package card.security;
+package card.security.service.JWT;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -7,11 +7,13 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@ConfigurationProperties(prefix = "security.JWT")
 public class JwtTokenUtils {
     /**
      JSON Web Token（缩写 JWT）是目前最流行的跨域认证解决方案。
@@ -37,7 +39,7 @@ public class JwtTokenUtils {
     /**
      * 加密密钥
      */
-    private static final String SECRET = "f2f4f94c9065_wNmx01w27MQnPc3BtUQkty_23P0pVlAdj86o5XznUrE";
+    private static String SECRET;
 
     /**
      * jwt创建token，考虑安全性，token中不因该放入太多信息（勿放密码之类的敏感信息），只放入关键字段值即可，如用户ID
@@ -49,7 +51,7 @@ public class JwtTokenUtils {
         JWTCreator.Builder builder = JWT.create();
         builder.withSubject(sub);//主题
         builder.withIssuer("pro-server");
-        if (timeout>0) {
+        if (timeout > 0) {
             builder.withExpiresAt(DateUtils.addSeconds(new Date(), timeout));//过期时间
         }
         return builder.sign(Algorithm.HMAC256(SECRET));
@@ -88,7 +90,7 @@ public class JwtTokenUtils {
             }
         });
         builder.withIssuer("pro-server");
-        if (timeout>0) {
+        if (timeout > 0) {
             builder.withExpiresAt(DateUtils.addSeconds(new Date(), timeout));//过期时间
         }
         return builder.sign(Algorithm.HMAC256(SECRET));

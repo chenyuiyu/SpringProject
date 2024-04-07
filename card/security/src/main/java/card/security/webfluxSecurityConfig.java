@@ -7,26 +7,28 @@ import java.util.Map;
 import org.springframework.security.authentication.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.server.ServerWebExchange;
 
 import com.alibaba.fastjson.JSONObject;
 
-import io.netty.handler.codec.http.HttpMethod;
+import card.security.service.authenticationFailureHandlerService;
+import card.security.service.logoutSuccessHandlerService;
+import card.security.service.serverAccessDeniedHandlerService;
+import card.security.service.JWT.JWTAuthenticationWebFilter;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -43,56 +45,40 @@ public class webfluxSecurityConfig {
     @Autowired
     private PasswordEncoder encoder;
 
+    @Autowired
+    private authenticationFailureHandlerService authenticationFailureHandler;
+
+    @Autowired
+    private logoutSuccessHandlerService logoutSuccessHandler;
+
+    @Autowired
+    private serverAccessDeniedHandlerService serverAccessDeniedHandler;
+
+    @SuppressWarnings("removal")
+    @Profile("!prod")
     @Bean
-    SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+    SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, JWTAuthenticationWebFilter JWTfilter) {
         log.info("加载security 权限配置....");
         return http
         .csrf().disable()
         .cors().disable()
-        .httpBasic().disable()
-        .formLogin()
-        .authenticationFailureHandler((webFilterExchange, exception) -> { //验证失败处理器(可以单独创建类处理)
-            webFilterExchange.getExchange().getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            Map<String, String> responseMap = new HashMap<>();
-            responseMap.put("code", "failure");
-            if (exception instanceof UsernameNotFoundException) {
-                responseMap.put("msg", "用户不存在 " + exception.getMessage());
-            } else if (exception instanceof BadCredentialsException) {
-                responseMap.put("msg", "密码错误 " + exception.getMessage());
-            } else if (exception instanceof LockedException) {
-                responseMap.put("msg", "用户锁定 " + exception.getMessage());
-            } else if (exception instanceof AccountExpiredException) {
-                responseMap.put("msg", "账户过期 " + exception.getMessage());
-            } else if (exception instanceof DisabledException) {
-                responseMap.put("msg", "账户不可用 " + exception.getMessage());
-            } else {
-                responseMap.put("msg", "系统错误 " + exception.getMessage());
-            }
-            //responseMap.put("msg", exception.getMessage());
-            return writeWith(webFilterExchange.getExchange(), responseMap);
-        })
-        .loginPage("/login")
-        .and()
+        .httpBasic().disable()//注释这个可以正常设置rest基础路径
+        .authenticationManager(this.authenticationManager())//自定义用户和加密
+        .addFilterAt(JWTfilter, SecurityWebFiltersOrder.AUTHENTICATION)
         .authorizeExchange()
         //.pathMatchers(HttpMethod.OPTIONS).permitAll()//特殊请求过滤
         .pathMatchers("/login").permitAll()//登录不需要验证
+        .pathMatchers("/api/**").authenticated()
         .anyExchange().permitAll()
-        .and().logout()
-                .logoutSuccessHandler((webFilterExchange, authentication) -> { //退出成功处理器(可以单独创建类处理)
-                    Map<String, String> responseMap = new HashMap<>();
-                    responseMap.put("code", "logout");
-                    responseMap.put("msg", "退出成功");
-                    return writeWith(webFilterExchange.getExchange(), responseMap);
-                }).and()
-                .exceptionHandling()
-                .accessDeniedHandler((exchange, denied) -> { // 无权限访问处理器(可以单独创建类处理)
-                    Map<String, String> responseMap = new HashMap<>();
-                    responseMap.put("code", "denied");
-                    responseMap.put("msg", "账户无权限访问");
-                    return writeWith(exchange, responseMap);
-                })
         .and()
-        .authenticationManager(this.authenticationManager())
+        .formLogin()
+        .loginPage("/login")
+        .authenticationFailureHandler(authenticationFailureHandler)//认证失败处理器
+        .and().logout()
+        .logoutSuccessHandler(logoutSuccessHandler).and()//登出成功处理器
+        .exceptionHandling()
+        .accessDeniedHandler(serverAccessDeniedHandler)//访问拒绝处理器
+        .and()
         .build();
     }
 
@@ -104,6 +90,7 @@ public class webfluxSecurityConfig {
         return authenticationManager;
     }
 
+    //辅助函数，用于将JSON数据写入response
     public Mono<Void> writeWith(ServerWebExchange exchange, Map<String, String> responseMap){
         ServerHttpResponse response = exchange.getResponse();
         String body = JSONObject.toJSONString(responseMap);

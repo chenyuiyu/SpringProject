@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.util.Base64Utils;
+import java.nio.charset.StandardCharsets;
 
 import card.domain.User;
 import card.domain.printForShow;
@@ -24,11 +26,17 @@ public class printForShowControllerTest {
     @Autowired
     private WebTestClient client;
 
+    @SuppressWarnings({ "removal", "deprecation" })
     @Test
     public void shouldReturnAllprintForShows() throws IOException {
 
         //注意：json路径中的属性为小写
         client.get().uri("/printForShows")
+        .header(
+            "Authorization", 
+            "Basic " + Base64Utils.encodeToString(
+            "chenyuiyu:88888888".getBytes(StandardCharsets.UTF_8))
+        )
         .exchange()
         .expectStatus().isOk()
         .expectBody()

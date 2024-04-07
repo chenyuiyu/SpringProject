@@ -1,8 +1,7 @@
-package card.security;
+package card.domain;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import card.domain.User;
 import lombok.Data;
 import lombok.NonNull;
 

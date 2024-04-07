@@ -22,7 +22,9 @@ data:
         qunUrl: "sanguosha/wujiang/【群】谋貂蝉.jpg"
         shenUrl: "sanguosha.wujiang/【神】荀彧.jpg"
 debug: true
-
+security:
+    JWT:
+        SECRET: "JF24hnro0qjijv_EWTWJI-9-=O[]LJkowahfbfaow841-o;l231h25da"
 ---
 spring:
     config:

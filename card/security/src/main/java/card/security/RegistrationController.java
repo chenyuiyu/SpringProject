@@ -3,10 +3,18 @@ package card.security;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +23,12 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 
 import java.security.Principal;
 import card.data.UserRepository;
+import card.domain.RegistrationForm;
+import card.domain.User;
+import card.domain.loginForm;
+import card.domain.printForShow;
+import card.security.service.JWT.JwtTokenUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 //注意：@EnableWebFlux用来配置freemarker，它适用于模板文件，但是对静态资源访问有问题，访问纯静态资源请注释
@@ -32,15 +46,19 @@ public class RegistrationController{
      2.2. 登录失败，进入ServerAuthenticationFailureHandler类中加工返回数据
      2.3. 登录成功后，继续通过postamn 以get访问：http://127.0.0.1:8080/getUser，响应正常
      */
+    @Autowired
+    private UserRepository userRepo;
 
+    @Autowired
+    private PasswordEncoder encoder;
     /**
-     * 不限制用户访问（需登录）
+     * 获取所有已注册的用户
      * @return
      */
-    @RequestMapping("/getUser")
+    @GetMapping("/allUsers")
     @ResponseBody
-    public Mono<String> getUser(){
-        return Mono.just("getUser");
+    public Flux<User> getUser(){
+        return userRepo.findByAuthority(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     /**
@@ -51,9 +69,9 @@ public class RegistrationController{
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/user", method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Mono<String> user(Principal principal){
-        System.out.println(principal.getName());
-        return Mono.just("hello "+principal.getName());
+    public Mono<String> user(Principal principal) {
+
+        return Mono.just("hello " + principal.getName());
     }
 
     /**
@@ -65,20 +83,52 @@ public class RegistrationController{
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/admin", method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Mono<String> admin(Principal principal,Authentication authentication){
-        System.out.println(authentication.getAuthorities());
-        System.out.println(principal.getName());
-        return Mono.just("admin "+principal.getName());
+    public Mono<String> admin(Principal principal,Authentication authentication) {
+        return Mono.just("admin " + principal.getName());
     }
 
-    @RequestMapping(value = "/login", method = {RequestMethod.GET,RequestMethod.POST})
+    
+    @PostMapping(value = "/register", consumes = "application/json")
     @ResponseBody
-    public Mono<Object> login(ServerHttpResponse response){
+    public Mono<Object> register(@RequestBody RegistrationForm form, ServerHttpResponse response) {
         Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("code", "failure");
-        responseMap.put("msg", "您还未登录");
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
-        return Mono.just(responseMap);
+
+        if(userRepo.findByUsername(form.getUsername()).block() != null) {
+            responseMap.put("code", "failure");
+            responseMap.put("msg", "用户名已存在");
+            response.setStatusCode(HttpStatus.CONFLICT);
+        }
+    
+        responseMap.put("code", "success");
+        responseMap.put("msg", "注册成功");
+        response.setStatusCode(HttpStatus.CREATED);
+
+        return userRepo.save(form.toUser(encoder)).map(user -> responseMap);
     }
+
+    @PostMapping(value = "/login", consumes = "application/json")
+    @ResponseBody
+    public Mono<Object> login(@RequestBody loginForm form, ServerHttpResponse response) {
+        Mono<User> user = userRepo.findByUsername(form.getUsername());
+        Map<String, String> responseMap = new HashMap<>();
+        User cur = user.block();
+        if(cur == null || !cur.getPassword().equals(form.getPassword())) {
+            responseMap.put("code", "failure");
+            responseMap.put("msg", "用户不存在");
+            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+            return Mono.just(responseMap);
+        }
+        return Mono.just(responseMap)
+        .map(
+            r -> {
+                response.setStatusCode(HttpStatus.ACCEPTED);
+                r.put("code", "success");
+                r.put("msg", "登陆成功");
+                r.put("token", JwtTokenUtils.createToken(cur.getUsername(), 86400));//token中包含了用户的用户名和是否为ADMIN
+                return r;
+            }
+        );
+    }
+    
 
 }

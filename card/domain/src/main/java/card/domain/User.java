@@ -43,14 +43,20 @@ public class User implements UserDetails {
     private String phoneNumber;//手机号码
     private String email;//邮箱
 
-    private Set<String> roles = new HashSet<>(Arrays.asList("ROLE_USER"));
+    private Set<GrantedAuthority> roles = new HashSet<>(Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+
+    public void addRole(GrantedAuthority grand) {
+        if(grand != null) roles.add(grand);
+    }
+
+    public void addRoles(Collection<? extends GrantedAuthority> grands) {
+        for(GrantedAuthority grand : grands) this.addRole(grand);
+    }
 
     //授权集合
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> res = new ArrayList<>();
-        for(String ga : roles) res.add(new SimpleGrantedAuthority(ga));
-        return res;
+        return roles;
     }
 
     //账号未过期确认

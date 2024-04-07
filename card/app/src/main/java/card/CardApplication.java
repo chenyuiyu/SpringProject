@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 import card.data.dataLoader;
-import card.security.initUserService;
+import card.security.service.initUserService;
 
 @SpringBootApplication(exclude = {WebMvcAutoConfiguration.class})
 @EnableWebFlux

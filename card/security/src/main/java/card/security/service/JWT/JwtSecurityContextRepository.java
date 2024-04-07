@@ -1,4 +1,4 @@
-package card.security;
+package card.security.service.JWT;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -7,15 +7,17 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.web.server.ServerWebExchange;
+import card.security.service.UserRepositoryUserDetailsService;
+
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 
 public class JwtSecurityContextRepository implements ServerSecurityContextRepository {
+
     private UserRepositoryUserDetailsService userService;
 
     public JwtSecurityContextRepository(UserRepositoryUserDetailsService userService){

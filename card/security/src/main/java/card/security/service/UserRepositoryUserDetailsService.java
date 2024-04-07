@@ -1,4 +1,4 @@
-package card.security;
+package card.security.service;
 
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
